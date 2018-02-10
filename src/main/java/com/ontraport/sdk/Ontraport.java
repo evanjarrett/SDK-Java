@@ -1,8 +1,11 @@
 package com.ontraport.sdk;
 
+
 import com.ontraport.sdk.http.CurlClient;
+import com.ontraport.sdk.objects.Objects;
 
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Ontraport {
 
@@ -10,7 +13,7 @@ public class Ontraport {
 
     public static final int API_VERSION = 1;
 
-    protected String[] _apiInstances;
+    private static Map<String, Objects> _apiInstances = new ConcurrentHashMap<>();
     protected String[] _customObjects;
     protected CurlClient _httpClient;
 
@@ -42,6 +45,12 @@ public class Ontraport {
 
     public CurlClient getHttpClient() {
         return _httpClient;
+    }
+
+    public Objects objects() {
+        Objects obj = new Objects(this);
+        _apiInstances.put("objects", obj);
+        return obj;
     }
 
     public String request(Map<String, String> requestParams, String url, String method, String[] options) {

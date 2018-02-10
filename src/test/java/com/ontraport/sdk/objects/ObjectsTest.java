@@ -24,12 +24,12 @@ public class ObjectsTest {
         CurlClient client = mock(CurlClient.class);
         when(client.httpRequest(anyMap(), anyString(), anyString())).thenReturn(
                 "{\"code\": 0, \"data\": {\"id\": \"970\", \"owner\": \"1\", \"firstname\": \"first\", \"lastname\": \"last\", \"email\": \"email@email.com\",}, \"account_id\": \"123\"}");
-        ontraport = new Ontraport("2_50_123", "123", client);
+        ontraport = new Ontraport("2_22634_EYtdpSTNw", "k6Bcg69pWqqGK9k");
     }
 
     @Test
     public void testRetrieveOne() throws RequiredParamsException {
-        Objects obj = new Objects(ontraport);
+        Objects obj = ontraport.objects();
         Map<String, String> map = new HashMap<>();
         map.put("id", "970");
         map.put("objectID", "0");
@@ -40,7 +40,7 @@ public class ObjectsTest {
 
     @Test
     public void testRetrieveMultiplePaginated() throws RequiredParamsException {
-        Objects obj = new Objects(ontraport);
+        Objects obj = ontraport.objects();
         Map<String, String> map = new HashMap<>();
         map.put("objectID", "0");
         assertEquals("", obj.retrieveMultiplePaginated(map));
@@ -49,10 +49,17 @@ public class ObjectsTest {
 
     @Test(expected = RequiredParamsException.class)
     public void testRetrieveOneBadParams() throws RequiredParamsException {
-        Objects obj = new Objects(ontraport);
+        Objects obj = ontraport.objects();
         Map<String, String> map = new HashMap<>();
         map.put("id", "1");
         map.put("bogus", "0");
-        obj.retrieveSingle(map);
+        assertEquals("", obj.retrieveSingle(map));
+    }
+
+    @Test
+    public void testRetrieveCustomObjects() throws RequiredParamsException {
+        Objects obj = ontraport.objects();
+        Map<String, String> map = new HashMap<>();
+        assertEquals("", obj.retrieveCustomObjects(map));
     }
 }

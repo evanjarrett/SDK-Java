@@ -21,7 +21,7 @@ public class CustomObjectsTest {
 
     @Test
     public void testRetrieveOne() throws RequiredParamsException {
-        Objects obj = new CustomObjects(ontraport);
+        Objects obj = ontraport.objects();
         Map<String, String> map = new HashMap<>();
         map.put("id", "1");
         assertEquals("", obj.retrieveSingle(map));
@@ -29,7 +29,7 @@ public class CustomObjectsTest {
 
     @Test(expected = RequiredParamsException.class)
     public void testRetrieveOneBadParams() throws RequiredParamsException {
-        Objects obj = new CustomObjects(ontraport);
+        Objects obj = ontraport.objects();
         Map<String, String> map = new HashMap<>();
         map.put("bogus", "1");
         obj.retrieveSingle(map);

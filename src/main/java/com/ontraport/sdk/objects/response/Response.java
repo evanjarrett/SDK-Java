@@ -1,8 +1,10 @@
-package com.ontraport.sdk.objects;
+package com.ontraport.sdk.objects.response;
 
 public class Response {
     private int code;
     private String account_id;
-    private Object data;
+
+    public interface Data {
+    }
 
 }
