@@ -1,5 +1,9 @@
 package com.ontraport.sdk;
 
+import com.ontraport.sdk.http.CurlClient;
+
+import java.util.HashMap;
+
 public class Ontraport {
 
     public static final String REQUEST_URL = "https://api.ontraport.com";
@@ -24,8 +28,8 @@ public class Ontraport {
     }
 
     public void setCredentials(String siteID, String apiKey) {
-        _apiKey = apiKey;
         _siteID = siteID;
+        _apiKey = apiKey;
     }
 
     public CurlClient createHttpClient() {
@@ -40,11 +44,16 @@ public class Ontraport {
         return _httpClient;
     }
 
-    public String request(String[] requestParams, String url, String method, String[] requiredParams, String[] options) {
-        CurlClient client = getHttpClient();
+    public String request(HashMap<String, String> requestParams, String url, String method, String[] options) {
         String str_url = buildEndpoint(url);
 
-        return client.httpRequest(requestParams, str_url, method, requiredParams, options);
+        return getHttpClient().httpRequest(requestParams, str_url, method, options);
+    }
+
+    public String request(HashMap<String, String> requestParams, String url, String method) {
+        String str_url = buildEndpoint(url);
+
+        return getHttpClient().httpRequest(requestParams, str_url, method);
     }
 
     public int getLastStatusCode() {
