@@ -27,7 +27,7 @@ public class CurlClient {
 
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
-    private HashMap<String, String> _requestHeaders = new HashMap<>();
+    private Map<String, String> _requestHeaders = new HashMap<>();
 
     private int _lastStatusCode;
 
@@ -40,7 +40,7 @@ public class CurlClient {
         _requestHeaders.put(header, value);
     }
 
-    public HashMap<String, String> getRequestHeaders() {
+    public Map<String, String> getRequestHeaders() {
         return _requestHeaders;
     }
 
@@ -53,11 +53,11 @@ public class CurlClient {
     }
 
 
-    public String httpRequest(HashMap<String, String> requestParams, String url, String method, String[] options) {
+    public String httpRequest(Map<String, String> requestParams, String url, String method, String[] options) {
         return httpRequest(requestParams, url, method);
     }
 
-    public String httpRequest(HashMap<String, String> requestParams, String url, String method) {
+    public String httpRequest(Map<String, String> requestParams, String url, String method) {
         HttpUrl.Builder http_builder = Objects.requireNonNull(HttpUrl.parse(url)).newBuilder();
 
         if (method.toLowerCase().equals("get")) {

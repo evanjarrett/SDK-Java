@@ -7,7 +7,7 @@ import com.ontraport.sdk.http.Required;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Map;
 
 public class Objects {
 
@@ -38,7 +38,7 @@ public class Objects {
     }
 
     @Required(params = {"objectID", "id"})
-    public String retrieveSingle(HashMap<String, String> requestParams) throws RequiredParamsException {
+    public String retrieveSingle(Map<String, String> requestParams) throws RequiredParamsException {
         checkRequiredParams(requestParams,new Object(){}
                 .getClass()
                 .getEnclosingMethod()
@@ -47,7 +47,7 @@ public class Objects {
     }
 
     @Required(params = {"objectID"})
-    public String retrieveMultiple(HashMap<String, String> requestParams) throws RequiredParamsException {
+    public String retrieveMultiple(Map<String, String> requestParams) throws RequiredParamsException {
         checkRequiredParams(requestParams,new Object(){}
                 .getClass()
                 .getEnclosingMethod()
@@ -56,7 +56,7 @@ public class Objects {
     }
 
     @Required(params = {"objectID"})
-    public String retrieveMultiplePaginated(HashMap<String, String> requestParams) throws RequiredParamsException {
+    public String retrieveMultiplePaginated(Map<String, String> requestParams) throws RequiredParamsException {
 
         requestParams.putIfAbsent("start", "0");
         requestParams.putIfAbsent("range", "50");
@@ -79,7 +79,7 @@ public class Objects {
     }
 
     @Required(params = {"objectID"})
-    public String retrieveCollectionInfo(HashMap<String, String> requestParams) throws RequiredParamsException {
+    public String retrieveCollectionInfo(Map<String, String> requestParams) throws RequiredParamsException {
         checkRequiredParams(requestParams,new Object(){}
                 .getClass()
                 .getEnclosingMethod()
@@ -87,9 +87,9 @@ public class Objects {
         return client.request(requestParams, _endpointPlural + "/getInfo", "get");
     }
 
-    private void checkRequiredParams(HashMap<String, String> requestParams, String method) throws RequiredParamsException {
+    private void checkRequiredParams(Map<String, String> requestParams, String method) throws RequiredParamsException {
         try {
-            Method m = getClass().getMethod(method, HashMap.class);
+            Method m = getClass().getMethod(method, Map.class);
             String[] requiredParams = m.getAnnotation(Required.class).params();
 
             ArrayList<String> missingParams = new ArrayList<>();

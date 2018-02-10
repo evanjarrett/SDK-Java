@@ -4,7 +4,7 @@ import com.ontraport.sdk.Ontraport;
 import com.ontraport.sdk.exceptions.RequiredParamsException;
 import com.ontraport.sdk.http.Required;
 
-import java.util.HashMap;
+import java.util.Map;
 
 public class CustomObjects extends Objects {
 
@@ -14,7 +14,7 @@ public class CustomObjects extends Objects {
 
     @Override
     @Required(params={"id"})
-    public String retrieveSingle(HashMap<String, String> requestParams) throws RequiredParamsException {
+    public String retrieveSingle(Map<String, String> requestParams) throws RequiredParamsException {
         super.retrieveSingle(requestParams);
         return "";
     }

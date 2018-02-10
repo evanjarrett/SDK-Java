@@ -2,7 +2,7 @@ package com.ontraport.sdk;
 
 import com.ontraport.sdk.http.CurlClient;
 
-import java.util.HashMap;
+import java.util.Map;
 
 public class Ontraport {
 
@@ -44,13 +44,13 @@ public class Ontraport {
         return _httpClient;
     }
 
-    public String request(HashMap<String, String> requestParams, String url, String method, String[] options) {
+    public String request(Map<String, String> requestParams, String url, String method, String[] options) {
         String str_url = buildEndpoint(url);
 
         return getHttpClient().httpRequest(requestParams, str_url, method, options);
     }
 
-    public String request(HashMap<String, String> requestParams, String url, String method) {
+    public String request(Map<String, String> requestParams, String url, String method) {
         String str_url = buildEndpoint(url);
 
         return getHttpClient().httpRequest(requestParams, str_url, method);
