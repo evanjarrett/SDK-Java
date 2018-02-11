@@ -5,9 +5,6 @@ import com.ontraport.sdk.exceptions.RequiredParamsException;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import static org.junit.Assert.assertEquals;
 
 public class CustomObjectsTest {
@@ -22,7 +19,7 @@ public class CustomObjectsTest {
     @Test
     public void testRetrieveOne() throws RequiredParamsException {
         Objects obj = ontraport.objects();
-        Map<String, String> map = new HashMap<>();
+        RequestParams map = new RequestParams();
         map.put("id", "1");
         assertEquals("", obj.retrieveSingle(map));
     }
@@ -30,7 +27,7 @@ public class CustomObjectsTest {
     @Test(expected = RequiredParamsException.class)
     public void testRetrieveOneBadParams() throws RequiredParamsException {
         Objects obj = ontraport.objects();
-        Map<String, String> map = new HashMap<>();
+        RequestParams map = new RequestParams();
         map.put("bogus", "1");
         obj.retrieveSingle(map);
     }

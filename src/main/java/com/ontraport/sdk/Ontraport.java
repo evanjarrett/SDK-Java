@@ -2,7 +2,11 @@ package com.ontraport.sdk;
 
 
 import com.ontraport.sdk.http.CurlClient;
+import com.ontraport.sdk.objects.AbstractObject;
+import com.ontraport.sdk.objects.Contacts;
+import com.ontraport.sdk.objects.CustomObjects;
 import com.ontraport.sdk.objects.Objects;
+import com.ontraport.sdk.objects.RequestParams;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -13,8 +17,8 @@ public class Ontraport {
 
     public static final int API_VERSION = 1;
 
-    private static Map<String, Objects> _apiInstances = new ConcurrentHashMap<>();
-    protected String[] _customObjects;
+    private static Map<String, AbstractObject> _apiInstances = new ConcurrentHashMap<>();
+    protected Map<String, CustomObjects> _customObjects = new ConcurrentHashMap<>();
     protected CurlClient _httpClient;
 
     private String _siteID;
@@ -47,22 +51,41 @@ public class Ontraport {
         return _httpClient;
     }
 
+    public CustomObjects custom() {
+//        try {
+//            if (_customObjects.isEmpty()) {
+//                _customObjects.put(objects().retrieveCustomObjects(null));
+//            }
+//        }
+//        catch (RequiredParamsException ignored) {
+//        }
+        CustomObjects obj = new CustomObjects(this);
+        _apiInstances.put("customObjects", obj);
+        return obj;
+    }
+
     public Objects objects() {
         Objects obj = new Objects(this);
         _apiInstances.put("objects", obj);
         return obj;
     }
 
-    public String request(Map<String, String> requestParams, String url, String method, String[] options) {
-        String str_url = buildEndpoint(url);
-
-        return getHttpClient().httpRequest(requestParams, str_url, method, options);
+    public Contacts contacts() {
+        Contacts obj = new Contacts(this);
+        _apiInstances.put("contacts", obj);
+        return obj;
     }
 
-    public String request(Map<String, String> requestParams, String url, String method) {
+    public String request(RequestParams params, String url, String method, String[] options) {
         String str_url = buildEndpoint(url);
 
-        return getHttpClient().httpRequest(requestParams, str_url, method);
+        return getHttpClient().httpRequest(params, str_url, method, options);
+    }
+
+    public String request(RequestParams params, String url, String method) {
+        String str_url = buildEndpoint(url);
+
+        return getHttpClient().httpRequest(params, str_url, method);
     }
 
     public int getLastStatusCode() {

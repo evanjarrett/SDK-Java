@@ -1,6 +1,7 @@
 package com.ontraport.sdk.http;
 
 import com.google.gson.Gson;
+import com.ontraport.sdk.objects.RequestParams;
 import okhttp3.HttpUrl;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -53,15 +54,15 @@ public class CurlClient {
     }
 
 
-    public String httpRequest(Map<String, String> requestParams, String url, String method, String[] options) {
-        return httpRequest(requestParams, url, method);
+    public String httpRequest(RequestParams params, String url, String method, String[] options) {
+        return httpRequest(params, url, method);
     }
 
-    public String httpRequest(Map<String, String> requestParams, String url, String method) {
+    public String httpRequest(RequestParams params, String url, String method) {
         HttpUrl.Builder http_builder = Objects.requireNonNull(HttpUrl.parse(url)).newBuilder();
 
         if (method.toLowerCase().equals("get")) {
-            for (Map.Entry<String, String> entry : requestParams.entrySet()) {
+            for (Map.Entry<String, String> entry : params.entrySet()) {
                 http_builder.addQueryParameter(entry.getKey(), entry.getValue());
             }
         }
@@ -71,7 +72,7 @@ public class CurlClient {
 
         if (!method.toLowerCase().equals("get")) {
             Gson gson = new Gson();
-            RequestBody post_body = RequestBody.create(JSON, gson.toJson(requestParams));
+            RequestBody post_body = RequestBody.create(JSON, gson.toJson(params));
             request_builder.post(post_body);
         }
 
@@ -79,9 +80,9 @@ public class CurlClient {
             request_builder.addHeader(entry.getKey(), entry.getValue());
         }
 
-        Request request = request_builder.build();
+        Request requestParams = request_builder.build();
 
-        try (Response response = new OkHttpClient().newCall(request).execute()) {
+        try (Response response = new OkHttpClient().newCall(requestParams).execute()) {
             setLastStatusCode(response.code());
             return Objects.requireNonNull(response.body()).string();
         }
