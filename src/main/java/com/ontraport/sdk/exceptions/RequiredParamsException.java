@@ -6,6 +6,6 @@ public class RequiredParamsException extends OntraportAPIException {
     }
 
     public RequiredParamsException(String message) {
-
+        super("Missing required parameters: " + message);
     }
 }

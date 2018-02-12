@@ -50,7 +50,7 @@ public class ObjectsTest {
         Objects obj = ontraport.objects();
         RequestParams map = new RequestParams();
         map.put("id", "1");
-        map.put("bogus", "0");
+        map.put("ObjectID", "0");
         assertEquals("", obj.retrieveSingle(map).toString());
     }
 
