@@ -9,6 +9,8 @@ public class Transactions extends AbstractObject {
 
     public Transactions(Ontraport client) {
         super(client);
+        setEndpoint(_endpoint);
+        setEndpointPlural(_endpointPlural);
     }
 
 }

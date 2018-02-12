@@ -1,7 +1,6 @@
 package com.ontraport.sdk.http;
 
 import com.google.gson.Gson;
-import com.ontraport.sdk.objects.RequestParams;
 import okhttp3.HttpUrl;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -53,12 +52,16 @@ public class CurlClient {
         _lastStatusCode = statusCode;
     }
 
-
-    public String httpRequest(RequestParams params, String url, String method, String[] options) {
+    public SingleResponse httpRequest(RequestParams params, String url, String method, String[] options) {
         return httpRequest(params, url, method);
     }
 
-    public String httpRequest(RequestParams params, String url, String method) {
+
+    public SingleResponse httpRequest(RequestParams params, String url, String method) {
+        return httpRequest(params, url, method, SingleResponse.class);
+    }
+
+    public <T extends AbstractResponse> T httpRequest(RequestParams params, String url, String method, Class<T> responseClazz) {
         HttpUrl.Builder http_builder = Objects.requireNonNull(HttpUrl.parse(url)).newBuilder();
 
         if (method.toLowerCase().equals("get")) {
@@ -82,13 +85,16 @@ public class CurlClient {
 
         Request requestParams = request_builder.build();
 
-        try (Response response = new OkHttpClient().newCall(requestParams).execute()) {
+        String json = null;
+        try {
+            Response response = new OkHttpClient().newCall(requestParams).execute();
             setLastStatusCode(response.code());
-            return Objects.requireNonNull(response.body()).string();
+            json = Objects.requireNonNull(response.body()).string();
         }
         catch (IOException e) {
             e.printStackTrace();
         }
-        return "";
+        Gson gson = new Gson();
+        return gson.fromJson(json, responseClazz);
     }
 }

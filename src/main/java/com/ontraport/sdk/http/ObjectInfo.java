@@ -1,9 +1,9 @@
-package com.ontraport.sdk.objects.response;
+package com.ontraport.sdk.http;
 
-public class ObjectInfo extends Response {
-    private Data data = new Data();
+public class ObjectInfo extends AbstractResponse {
+    private Data data;
 
-    public class Data implements Response.Data {
+    public class Data implements AbstractResponse.Data {
         String[] listFields;
         FieldSettings[] listFieldSettings;
         String count;

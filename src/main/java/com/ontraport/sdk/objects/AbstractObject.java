@@ -3,8 +3,12 @@ package com.ontraport.sdk.objects;
 import com.google.gson.Gson;
 import com.ontraport.sdk.Ontraport;
 import com.ontraport.sdk.exceptions.RequiredParamsException;
+import com.ontraport.sdk.http.ListResponse;
+import com.ontraport.sdk.http.SingleResponse;
+import com.ontraport.sdk.http.Meta;
+import com.ontraport.sdk.http.ObjectInfo;
+import com.ontraport.sdk.http.RequestParams;
 import com.ontraport.sdk.http.Required;
-import com.ontraport.sdk.objects.response.ObjectInfo;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -37,74 +41,89 @@ public abstract class AbstractObject {
         this.client = client;
     }
 
-    public String retrieveCollectionInfo(RequestParams params) throws RequiredParamsException {
-        checkRequiredParams(params);
-        return client.request(params, _endpointPlural + "/getInfo", "get");
+    protected String getEndpoint() {
+        return _endpoint;
     }
 
-    public String retrieveMeta(RequestParams params) throws RequiredParamsException {
+    protected void setEndpoint(String endpoint) {
+        _endpoint = endpoint;
+    }
+
+    protected String getEndpointPlural() {
+        return _endpointPlural;
+    }
+
+    protected void setEndpointPlural(String endpointPlural) {
+        _endpointPlural = endpointPlural;
+    }
+
+    public ObjectInfo retrieveCollectionInfo(RequestParams params) throws RequiredParamsException {
         checkRequiredParams(params);
-        return client.request(params, _endpointPlural + "/meta", "get");
+        return client.request(params, getEndpointPlural() + "/getInfo", "get", ObjectInfo.class);
+    }
+
+    public Meta retrieveMeta(RequestParams params) throws RequiredParamsException {
+        checkRequiredParams(params);
+        return client.request(params, getEndpointPlural() + "/meta", "get", Meta.class);
     }
 
     @Required(params = {"id"})
-    public String retrieveSingle(RequestParams params) throws RequiredParamsException {
+    public SingleResponse retrieveSingle(RequestParams params) throws RequiredParamsException {
         checkRequiredParams(params);
-        return client.request(params, _endpoint, "get");
+        return client.request(params, getEndpoint(), "get");
     }
 
-    public String retrieveMultiple(RequestParams params) throws RequiredParamsException {
+    public ListResponse retrieveMultiple(RequestParams params) throws RequiredParamsException {
         checkRequiredParams(params);
-        return client.request(params, _endpointPlural, "get");
+        return client.request(params, getEndpointPlural(), "get", ListResponse.class);
     }
 
-    public String retrieveMultiplePaginated(RequestParams params) throws RequiredParamsException {
+    public ArrayList<ListResponse> retrieveMultiplePaginated(RequestParams params) throws RequiredParamsException {
+
+        ObjectInfo decoded = retrieveCollectionInfo(params);
+        int count = decoded.getCount();
 
         params.putIfAbsent("start", "0");
         params.putIfAbsent("range", "50");
 
-        String col = retrieveCollectionInfo(params);
-        ObjectInfo decoded = gson.fromJson(col, ObjectInfo.class);
-        int count = decoded.getCount();
-
         int start = Integer.parseInt(params.get("start"));
         int range = Integer.parseInt(params.get("range"));
 
-        ArrayList<String> data = new ArrayList<>();
+        ArrayList<ListResponse> data = new ArrayList<>();
         while (start < count) {
-            String multi = retrieveMultiple(params);
+            ListResponse multi = retrieveMultiple(params);
             data.add(multi);
             start += range;
             params.put("start", String.valueOf(start));
         }
-        return gson.toJson(data);
+        return data;
     }
 
-    public String create(RequestParams params) throws RequiredParamsException {
+    public SingleResponse create(RequestParams params) throws RequiredParamsException {
         checkRequiredParams(params);
-        return client.request(params, _endpointPlural, "post");
-    }
-
-    @Required(params = {"id"})
-    public String update(RequestParams params) throws RequiredParamsException {
-        checkRequiredParams(params);
-        return client.request(params, _endpointPlural, "put");
-    }
-
-    public String saveorupdate(RequestParams params) throws RequiredParamsException {
-        checkRequiredParams(params);
-        return client.request(params, _endpointPlural + "/saveorupdate", "post");
+        return client.request(params, getEndpointPlural(), "post");
     }
 
     @Required(params = {"id"})
-    public String deleteSingle(RequestParams params) throws RequiredParamsException {
+    public SingleResponse update(RequestParams params) throws RequiredParamsException {
         checkRequiredParams(params);
-        return client.request(params, _endpoint, "delete");
+        return client.request(params, getEndpointPlural(), "put");
     }
 
-    public String deleteMultiple(RequestParams params) throws RequiredParamsException {
+    public SingleResponse saveorupdate(RequestParams params) throws RequiredParamsException {
         checkRequiredParams(params);
-        return client.request(params, _endpointPlural, "delete");
+        return client.request(params, getEndpointPlural() + "/saveorupdate", "post");
+    }
+
+    @Required(params = {"id"})
+    public SingleResponse deleteSingle(RequestParams params) throws RequiredParamsException {
+        checkRequiredParams(params);
+        return client.request(params, getEndpoint(), "delete");
+    }
+
+    public SingleResponse deleteMultiple(RequestParams params) throws RequiredParamsException {
+        checkRequiredParams(params);
+        return client.request(params, getEndpointPlural(), "delete");
     }
 
     protected void checkRequiredParams(RequestParams params) throws RequiredParamsException {

@@ -2,6 +2,8 @@ package com.ontraport.sdk.objects;
 
 import com.ontraport.sdk.Ontraport;
 import com.ontraport.sdk.exceptions.RequiredParamsException;
+import com.ontraport.sdk.http.SingleResponse;
+import com.ontraport.sdk.http.RequestParams;
 
 public class Tasks extends AbstractObject {
 
@@ -10,27 +12,29 @@ public class Tasks extends AbstractObject {
 
     public Tasks(Ontraport client) {
         super(client);
+        setEndpoint(_endpoint);
+        setEndpointPlural(_endpointPlural);
     }
 
 
-    public String assign(RequestParams params) throws RequiredParamsException {
+    public SingleResponse assign(RequestParams params) throws RequiredParamsException {
         checkRequiredParams(params);
-        return client.request(params, _endpoint.toLowerCase() + "/assign", "get");
+        return client.request(params, getEndpoint().toLowerCase() + "/assign", "get");
     }
 
-    public String cancel(RequestParams params) throws RequiredParamsException {
+    public SingleResponse cancel(RequestParams params) throws RequiredParamsException {
         checkRequiredParams(params);
-        return client.request(params, _endpoint.toLowerCase() + "/cancel", "get");
+        return client.request(params, getEndpoint().toLowerCase() + "/cancel", "get");
     }
 
-    public String complete(RequestParams params) throws RequiredParamsException {
+    public SingleResponse complete(RequestParams params) throws RequiredParamsException {
         checkRequiredParams(params);
-        return client.request(params, _endpoint.toLowerCase() + "/complete", "get");
+        return client.request(params, getEndpoint().toLowerCase() + "/complete", "get");
     }
 
-    public String reschedule(RequestParams params) throws RequiredParamsException {
+    public SingleResponse reschedule(RequestParams params) throws RequiredParamsException {
         checkRequiredParams(params);
-        return client.request(params, _endpoint.toLowerCase() + "/reschedule", "get");
+        return client.request(params, getEndpoint().toLowerCase() + "/reschedule", "get");
     }
 
 

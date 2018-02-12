@@ -9,6 +9,8 @@ public class CampaignBuilderItems extends AbstractObject {
 
     public CampaignBuilderItems(Ontraport client) {
         super(client);
+        setEndpoint(_endpoint);
+        setEndpointPlural(_endpointPlural);
     }
 
 }

@@ -2,6 +2,7 @@ package com.ontraport.sdk.objects;
 
 import com.ontraport.sdk.Ontraport;
 import com.ontraport.sdk.exceptions.RequiredParamsException;
+import com.ontraport.sdk.http.RequestParams;
 import org.junit.Before;
 import org.junit.Test;
 

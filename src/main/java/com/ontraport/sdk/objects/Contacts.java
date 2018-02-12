@@ -9,6 +9,8 @@ public class Contacts extends AbstractObject {
 
     public Contacts(Ontraport client) {
         super(client);
+        setEndpoint(_endpoint);
+        setEndpointPlural(_endpointPlural);
     }
 
 }

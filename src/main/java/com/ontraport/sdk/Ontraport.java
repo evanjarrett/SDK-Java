@@ -1,12 +1,14 @@
 package com.ontraport.sdk;
 
 
+import com.ontraport.sdk.http.AbstractResponse;
+import com.ontraport.sdk.http.SingleResponse;
 import com.ontraport.sdk.http.CurlClient;
+import com.ontraport.sdk.http.RequestParams;
 import com.ontraport.sdk.objects.AbstractObject;
 import com.ontraport.sdk.objects.Contacts;
 import com.ontraport.sdk.objects.CustomObjects;
 import com.ontraport.sdk.objects.Objects;
-import com.ontraport.sdk.objects.RequestParams;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -76,16 +78,22 @@ public class Ontraport {
         return obj;
     }
 
-    public String request(RequestParams params, String url, String method, String[] options) {
+    public SingleResponse request(RequestParams params, String url, String method, String[] options) {
         String str_url = buildEndpoint(url);
 
         return getHttpClient().httpRequest(params, str_url, method, options);
     }
 
-    public String request(RequestParams params, String url, String method) {
+    public SingleResponse request(RequestParams params, String url, String method) {
         String str_url = buildEndpoint(url);
 
         return getHttpClient().httpRequest(params, str_url, method);
+    }
+
+    public <T extends AbstractResponse> T request(RequestParams params, String url, String method, Class<T> clazz) {
+        String str_url = buildEndpoint(url);
+
+        return getHttpClient().httpRequest(params, str_url, method, clazz);
     }
 
     public int getLastStatusCode() {

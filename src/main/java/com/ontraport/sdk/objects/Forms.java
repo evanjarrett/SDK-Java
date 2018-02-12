@@ -2,6 +2,8 @@ package com.ontraport.sdk.objects;
 
 import com.ontraport.sdk.Ontraport;
 import com.ontraport.sdk.exceptions.RequiredParamsException;
+import com.ontraport.sdk.http.SingleResponse;
+import com.ontraport.sdk.http.RequestParams;
 import com.ontraport.sdk.http.Required;
 
 public class Forms extends AbstractObject {
@@ -11,11 +13,13 @@ public class Forms extends AbstractObject {
 
     public Forms(Ontraport client) {
         super(client);
+        setEndpoint(_endpoint);
+        setEndpointPlural(_endpointPlural);
     }
 
     @Required(params = {"id"})
-    public String retrieveSmartFormHTML(RequestParams params) throws RequiredParamsException {
+    public SingleResponse retrieveSmartFormHTML(RequestParams params) throws RequiredParamsException {
         checkRequiredParams(params);
-        return client.request(params, _endpoint.toLowerCase(), "get");
+        return client.request(params, getEndpoint().toLowerCase(), "get");
     }
 }

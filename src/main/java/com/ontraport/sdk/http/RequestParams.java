@@ -1,4 +1,4 @@
-package com.ontraport.sdk.objects;
+package com.ontraport.sdk.http;
 
 import java.util.HashMap;
 import java.util.Set;
