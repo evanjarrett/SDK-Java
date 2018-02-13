@@ -7,11 +7,32 @@ public class ObjectInfo extends AbstractResponse {
         String[] listFields;
         FieldSettings[] listFieldSettings;
         String count;
+
+        public String[] getListFields() {
+            return listFields;
+        }
+
+        public FieldSettings[] getListFieldSettings() {
+            return listFieldSettings;
+        }
     }
 
     public class FieldSettings {
         String name;
         String width;
+        String sortDir;
+
+        public String getName() {
+            return name;
+        }
+
+        public String getSortDir() {
+            return sortDir;
+        }
+
+        public String getWidth() {
+            return width;
+        }
     }
 
     public int getCount() {
