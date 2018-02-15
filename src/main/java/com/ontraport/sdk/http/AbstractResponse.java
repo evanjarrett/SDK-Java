@@ -9,8 +9,15 @@ public abstract class AbstractResponse {
     public interface Data {
     }
 
+    public int getCode() {
+        return code;
+    }
+
+    public String getAccountId() {
+        return account_id;
+    }
+
     public String toString() {
         return new Gson().toJson(this, getClass());
     }
-
 }
