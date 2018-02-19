@@ -1,7 +1,5 @@
 package com.ontraport.sdk.http;
 
-import okhttp3.MediaType;
-
 import java.util.HashMap;
 import java.util.Map;
 
