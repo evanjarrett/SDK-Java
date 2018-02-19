@@ -17,8 +17,6 @@ public abstract class Client {
 
     public static final String RATE_LIMIT_RESET = "x-rate-limit-reset";
 
-    public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-
     protected Map<String, String> _requestHeaders = new HashMap<>();
 
     protected int _lastStatusCode;

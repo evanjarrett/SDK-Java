@@ -15,6 +15,8 @@ import java.util.Objects;
 
 public class OkClient extends Client {
 
+    public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+
     private OkHttpClient okHttpClient = new OkHttpClient();
 
     public OkClient() {
