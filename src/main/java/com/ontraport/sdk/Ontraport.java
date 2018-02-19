@@ -2,9 +2,10 @@ package com.ontraport.sdk;
 
 
 import com.ontraport.sdk.http.AbstractResponse;
-import com.ontraport.sdk.http.SingleResponse;
-import com.ontraport.sdk.http.CurlClient;
+import com.ontraport.sdk.http.Client;
 import com.ontraport.sdk.http.RequestParams;
+import com.ontraport.sdk.http.SingleResponse;
+import com.ontraport.sdk.http.URLClient;
 import com.ontraport.sdk.objects.AbstractObject;
 import com.ontraport.sdk.objects.Contacts;
 import com.ontraport.sdk.objects.CustomObjects;
@@ -21,7 +22,7 @@ public class Ontraport {
 
     private static Map<String, AbstractObject> _apiInstances = new ConcurrentHashMap<>();
     protected Map<String, CustomObjects> _customObjects = new ConcurrentHashMap<>();
-    protected CurlClient _httpClient;
+    protected Client _httpClient;
 
     private String _siteID;
     private String _apiKey;
@@ -31,8 +32,8 @@ public class Ontraport {
         this.setHttpClient(createHttpClient());
     }
 
-    public Ontraport(String siteID, String apiKey, CurlClient client) {
-        this.setCredentials(siteID, apiKey);
+    public Ontraport(String siteID, String apiKey, Client client) {
+        this.setCredentials(siteID, apiKey, client);
         this.setHttpClient(client);
     }
 
@@ -41,15 +42,21 @@ public class Ontraport {
         _apiKey = apiKey;
     }
 
-    public CurlClient createHttpClient() {
-        return new CurlClient(_siteID, _apiKey);
+    public void setCredentials(String siteID, String apiKey, Client client) {
+        _siteID = siteID;
+        _apiKey = apiKey;
+        client.setCredentials(siteID, apiKey);
     }
 
-    public void setHttpClient(CurlClient client) {
+    public Client createHttpClient() {
+        return new URLClient(_siteID, _apiKey);
+    }
+
+    public void setHttpClient(Client client) {
         _httpClient = client;
     }
 
-    public CurlClient getHttpClient() {
+    public Client getHttpClient() {
         return _httpClient;
     }
 
@@ -76,12 +83,6 @@ public class Ontraport {
         Contacts obj = new Contacts(this);
         _apiInstances.put("contacts", obj);
         return obj;
-    }
-
-    public SingleResponse request(RequestParams params, String url, String method, String[] options) {
-        String str_url = buildEndpoint(url);
-
-        return getHttpClient().httpRequest(params, str_url, method, options);
     }
 
     public SingleResponse request(RequestParams params, String url, String method) {

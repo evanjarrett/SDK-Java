@@ -2,13 +2,11 @@ package com.ontraport.sdk.objects;
 
 import com.ontraport.sdk.Ontraport;
 import com.ontraport.sdk.exceptions.RequiredParamsException;
-import com.ontraport.sdk.http.CurlClient;
 import com.ontraport.sdk.http.RequestParams;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
 
 public class ContactsTest {
 
@@ -16,7 +14,6 @@ public class ContactsTest {
 
     @Before
     public void setUp() {
-        CurlClient client = mock(CurlClient.class);
         ontraport = new Ontraport("12", "123");
     }
 

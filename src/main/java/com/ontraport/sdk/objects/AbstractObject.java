@@ -86,8 +86,8 @@ public abstract class AbstractObject {
         params.putIfAbsent("start", "0");
         params.putIfAbsent("range", "50");
 
-        int start = Integer.parseInt(params.get("start"));
-        int range = Integer.parseInt(params.get("range"));
+        int start = params.getAsInt("start");
+        int range = params.getAsInt("range");
 
         ArrayList<ListResponse> data = new ArrayList<>();
         while (start < count) {

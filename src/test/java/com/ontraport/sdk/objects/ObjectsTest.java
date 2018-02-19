@@ -2,17 +2,16 @@ package com.ontraport.sdk.objects;
 
 import com.ontraport.sdk.Ontraport;
 import com.ontraport.sdk.exceptions.RequiredParamsException;
-import com.ontraport.sdk.http.CurlClient;
 import com.ontraport.sdk.http.ListResponse;
 import com.ontraport.sdk.http.RequestParams;
 import com.ontraport.sdk.http.SingleResponse;
+import com.ontraport.sdk.http.URLClient;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
 
 public class ObjectsTest {
 
@@ -20,9 +19,8 @@ public class ObjectsTest {
 
     @Before
     public void setUp() {
-        CurlClient client = mock(CurlClient.class);
         //when(client.httpRequest(any(RequestParams.class), anyString(), anyString())).thenReturn();
-        ontraport = new Ontraport("123", "123");
+        ontraport = new Ontraport("123", "123", new URLClient());
     }
 
     @Test
@@ -59,5 +57,15 @@ public class ObjectsTest {
         Objects obj = ontraport.objects();
         RequestParams map = new RequestParams();
         assertEquals("", obj.retrieveCustomObjects(map).toString());
+    }
+
+    @Test
+    public void test() throws RequiredParamsException {
+        Objects obj = ontraport.objects();
+        RequestParams map = new RequestParams();
+        map.put("ids", new String[]{"970"});
+        map.put("objectID", "0");
+        map.put("add_names", new String[]{"SDK-Java"});
+        assertEquals("", obj.addTagByName(map).toString());
     }
 }

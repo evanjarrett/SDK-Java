@@ -3,6 +3,7 @@ package com.ontraport.sdk.objects;
 import com.ontraport.sdk.Ontraport;
 import com.ontraport.sdk.exceptions.RequiredParamsException;
 import com.ontraport.sdk.http.ListResponse;
+import com.ontraport.sdk.http.MessageResponse;
 import com.ontraport.sdk.http.Meta;
 import com.ontraport.sdk.http.ObjectInfo;
 import com.ontraport.sdk.http.RequestParams;
@@ -91,9 +92,9 @@ public class Objects extends AbstractObject {
     }
 
     @Required(params = {"objectID"})
-    public SingleResponse retrieveAllWithTag(RequestParams params) throws RequiredParamsException {
+    public ListResponse retrieveAllWithTag(RequestParams params) throws RequiredParamsException {
         checkRequiredParams(params);
-        return client.request(params, getEndpointPlural() + "/tag", "get");
+        return client.request(params, getEndpointPlural() + "/tag", "get", ListResponse.class);
     }
 
     @Required(params = {"objectID", "email"})
@@ -139,26 +140,26 @@ public class Objects extends AbstractObject {
     }
 
     @Required(params = {"ids", "add_names"})
-    public SingleResponse addTagByName(RequestParams params) throws RequiredParamsException {
+    public MessageResponse addTagByName(RequestParams params) throws RequiredParamsException {
         checkRequiredParams(params);
-        return client.request(params, getEndpointPlural() + "/tagByName", "post");
+        return client.request(params, getEndpointPlural() + "/tagByName", "put", MessageResponse.class);
     }
 
     @Required(params = {"ids", "remove_names"})
-    public SingleResponse removeTagByName(RequestParams params) throws RequiredParamsException {
+    public MessageResponse removeTagByName(RequestParams params) throws RequiredParamsException {
         checkRequiredParams(params);
-        return client.request(params, getEndpointPlural() + "/tagByName", "delete");
+        return client.request(params, getEndpointPlural() + "/tagByName", "delete", MessageResponse.class);
     }
 
     @Required(params = {"ids", "add_list"})
-    public SingleResponse subscribe(RequestParams params) throws RequiredParamsException {
+    public MessageResponse subscribe(RequestParams params) throws RequiredParamsException {
         checkRequiredParams(params);
-        return client.request(params, getEndpointPlural() + "/subscribe", "post");
+        return client.request(params, getEndpointPlural() + "/subscribe", "post", MessageResponse.class);
     }
 
     @Required(params = {"ids", "remove_list"})
-    public SingleResponse unsubscribe(RequestParams params) throws RequiredParamsException {
+    public MessageResponse unsubscribe(RequestParams params) throws RequiredParamsException {
         checkRequiredParams(params);
-        return client.request(params, getEndpointPlural() + "/subscribe", "delete");
+        return client.request(params, getEndpointPlural() + "/subscribe", "delete", MessageResponse.class);
     }
 }

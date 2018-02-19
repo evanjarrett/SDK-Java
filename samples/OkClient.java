@@ -1,61 +1,41 @@
 package com.ontraport.sdk.http;
 
 import com.google.gson.Gson;
+import okhttp3.Cache;
 import okhttp3.HttpUrl;
-import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public class CurlClient {
+public class OkClient extends Client {
 
-    public static final int HTTP_OK = 200;
-    public static final int HTTP_BAD_REQUEST = 400;
-    public static final int HTTP_UNAUTHORIZED = 401;
-    public static final int HTTP_FORBIDDEN = 403;
-    public static final int HTTP_NOT_FOUND = 404;
-    public static final int HTTP_RATE_LIMIT = 429;
-    public static final int HTTP_ERROR = 500;
+    private OkHttpClient okHttpClient = new OkHttpClient();
 
-    public static final String RATE_LIMIT_RESET = "x-rate-limit-reset";
+    public OkClient() {
 
-    public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-
-    private Map<String, String> _requestHeaders = new HashMap<>();
-
-    private int _lastStatusCode;
-
-    public CurlClient(String siteID, String apiKey) {
-        setRequestHeader("Api-Appid", siteID);
-        setRequestHeader("Api-Key", apiKey);
     }
 
-    public void setRequestHeader(String header, String value) {
-        _requestHeaders.put(header, value);
+    public OkClient(String siteID, String apiKey) {
+        super(siteID, apiKey);
     }
 
-    public Map<String, String> getRequestHeaders() {
-        return _requestHeaders;
-    }
+    public OkClient(String siteID, String apiKey, File cacheDir) {
+        super(siteID, apiKey);
 
-    public int getLastStatusCode() {
-        return _lastStatusCode;
+        if (cacheDir != null) {
+            int cacheSize = 10 * 1024 * 1024; // 10 MiB
+            Cache cache = new Cache(cacheDir, cacheSize);
+            okHttpClient = new OkHttpClient.Builder()
+                    .cache(cache)
+                    .build();
+        }
     }
-
-    public void setLastStatusCode(int statusCode) {
-        _lastStatusCode = statusCode;
-    }
-
-    public SingleResponse httpRequest(RequestParams params, String url, String method, String[] options) {
-        return httpRequest(params, url, method);
-    }
-
 
     public SingleResponse httpRequest(RequestParams params, String url, String method) {
         return httpRequest(params, url, method, SingleResponse.class);
@@ -65,8 +45,8 @@ public class CurlClient {
         HttpUrl.Builder http_builder = Objects.requireNonNull(HttpUrl.parse(url)).newBuilder();
 
         if (method.toLowerCase().equals("get")) {
-            for (Map.Entry<String, String> entry : params.entrySet()) {
-                http_builder.addQueryParameter(entry.getKey(), entry.getValue());
+            for (Map.Entry<String, Object> entry : params.entrySet()) {
+                http_builder.addQueryParameter(entry.getKey(), (String) entry.getValue());
             }
         }
 
@@ -87,7 +67,7 @@ public class CurlClient {
 
         String json = null;
         try {
-            Response response = new OkHttpClient().newCall(requestParams).execute();
+            Response response = okHttpClient.newCall(requestParams).execute();
             setLastStatusCode(response.code());
             json = Objects.requireNonNull(response.body()).string();
         }
