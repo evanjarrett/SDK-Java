@@ -1,4 +1,4 @@
-package com.ontraport.sdk.critera;
+package com.ontraport.sdk.criteria;
 
 import java.util.ArrayList;
 import java.util.List;

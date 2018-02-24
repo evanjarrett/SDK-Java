@@ -1,4 +1,4 @@
-package com.ontraport.sdk.critera;
+package com.ontraport.sdk.criteria;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

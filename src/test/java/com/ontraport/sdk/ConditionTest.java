@@ -2,8 +2,8 @@ package com.ontraport.sdk;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.ontraport.sdk.critera.Condition;
-import com.ontraport.sdk.critera.Operator;
+import com.ontraport.sdk.criteria.Condition;
+import com.ontraport.sdk.criteria.Operator;
 import junit.framework.TestCase;
 
 import java.util.Arrays;

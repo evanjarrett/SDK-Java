@@ -1,4 +1,4 @@
-package com.ontraport.sdk.critera;
+package com.ontraport.sdk.criteria;
 
 public enum Operator {
     EQUALS("="),
