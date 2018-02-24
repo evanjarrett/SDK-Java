@@ -6,6 +6,7 @@ import com.ontraport.sdk.http.ListResponse;
 import com.ontraport.sdk.http.RequestParams;
 import com.ontraport.sdk.http.SingleResponse;
 import com.ontraport.sdk.http.URLClient;
+import com.ontraport.sdk.http.UpdateResponse;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -51,6 +52,18 @@ public class ObjectsTest {
         map.put("ObjectID", "0");
         assertEquals("", obj.retrieveSingle(map).toString());
     }
+
+    @Test
+    public void testUpdate() throws RequiredParamsException {
+        Objects obj = ontraport.objects();
+        RequestParams map = new RequestParams();
+        map.put("id", "974");
+        map.put("objectID", "0");
+        map.put("firstname", "test");
+        UpdateResponse ur = obj.update(map);
+        assertEquals("", ur.toString());
+    }
+
 
     @Test
     public void testRetrieveCustomObjects() throws RequiredParamsException {

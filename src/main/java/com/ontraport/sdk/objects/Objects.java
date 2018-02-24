@@ -9,6 +9,7 @@ import com.ontraport.sdk.http.ObjectInfo;
 import com.ontraport.sdk.http.RequestParams;
 import com.ontraport.sdk.http.Required;
 import com.ontraport.sdk.http.SingleResponse;
+import com.ontraport.sdk.http.UpdateResponse;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -56,7 +57,7 @@ public class Objects extends AbstractObject {
 
     @Override
     @Required(params = {"objectID"})
-    public SingleResponse update(RequestParams params) throws RequiredParamsException {
+    public UpdateResponse update(RequestParams params) throws RequiredParamsException {
         return super.update(params);
     }
 

@@ -4,11 +4,12 @@ import com.google.gson.Gson;
 import com.ontraport.sdk.Ontraport;
 import com.ontraport.sdk.exceptions.RequiredParamsException;
 import com.ontraport.sdk.http.ListResponse;
-import com.ontraport.sdk.http.SingleResponse;
 import com.ontraport.sdk.http.Meta;
 import com.ontraport.sdk.http.ObjectInfo;
 import com.ontraport.sdk.http.RequestParams;
 import com.ontraport.sdk.http.Required;
+import com.ontraport.sdk.http.SingleResponse;
+import com.ontraport.sdk.http.UpdateResponse;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -105,9 +106,9 @@ public abstract class AbstractObject {
     }
 
     @Required(params = {"id"})
-    public SingleResponse update(RequestParams params) throws RequiredParamsException {
+    public UpdateResponse update(RequestParams params) throws RequiredParamsException {
         checkRequiredParams(params);
-        return client.request(params, getEndpointPlural(), "put");
+        return client.request(params, getEndpointPlural(), "put", UpdateResponse.class);
     }
 
     public SingleResponse saveorupdate(RequestParams params) throws RequiredParamsException {
