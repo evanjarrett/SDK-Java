@@ -49,9 +49,9 @@ public abstract class Client {
         _lastStatusCode = statusCode;
     }
 
-    public SingleResponse httpRequest(RequestParams params, String url, String method) throws NullResponseException {
+    public SingleResponse httpRequest(RequestParams params, String url, String method) {
         return httpRequest(params, url, method, SingleResponse.class);
     }
 
-    abstract public <T extends AbstractResponse> T httpRequest(RequestParams params, String url, String method, Class<T> responseClazz) throws NullResponseException;
+    abstract public <T extends AbstractResponse> T httpRequest(RequestParams params, String url, String method, Class<T> responseClazz);
 }
