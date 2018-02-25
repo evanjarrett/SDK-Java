@@ -10,7 +10,24 @@ public class RequestParams extends HashMap<String, Object> {
         return super.entrySet();
     }
 
-    public int getAsInt(Object key) {
+    public String getVal(String key) {
+        Object super_val = super.get(key);
+        if (super_val instanceof Integer) {
+            return Integer.toString((Integer) super_val);
+        }
+
+        if (super_val instanceof String) {
+            return (String) super_val;
+        }
+
+        return super_val.toString();
+    }
+
+    public int getAsInt(String key) {
+        Object super_val = super.get(key);
+        if (super_val instanceof Integer) {
+            return (Integer) super_val;
+        }
         return Integer.parseInt((String) super.get(key));
     }
 }
