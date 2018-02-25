@@ -23,21 +23,11 @@ public class URLClient extends Client {
         super(siteID, apiKey);
     }
 
-    public SingleResponse httpRequest(RequestParams params, String url, String method) {
+    public SingleResponse httpRequest(RequestParams params, String url, String method) throws NullResponseException {
         return httpRequest(params, url, method, SingleResponse.class);
     }
 
-    private String buildQueryString(RequestParams params) throws UnsupportedEncodingException {
-        ArrayList<String> paramsList = new ArrayList<>();
-        for (Map.Entry<String, Object> entry : params.entrySet()) {
-            String temp = URLEncoder.encode(entry.getKey(), "UTF-8") + "=" +
-                    URLEncoder.encode((String) entry.getValue(), "UTF-8");
-            paramsList.add(temp);
-        }
-        return "?" + String.join("&", paramsList);
-    }
-
-    public <T extends AbstractResponse> T httpRequest(RequestParams params, String baseURL, String method, Class<T> responseClazz) {
+    public <T extends AbstractResponse> T httpRequest(RequestParams params, String baseURL, String method, Class<T> responseClazz) throws NullResponseException {
 
         String http_url = baseURL;
 
@@ -83,5 +73,15 @@ public class URLClient extends Client {
             e.printStackTrace();
         }
         return gson.fromJson(json, responseClazz);
+    }
+
+    private String buildQueryString(RequestParams params) throws UnsupportedEncodingException {
+        ArrayList<String> paramsList = new ArrayList<>();
+        for (Map.Entry<String, Object> entry : params.entrySet()) {
+            String temp = URLEncoder.encode(entry.getKey(), "UTF-8") + "=" +
+                    URLEncoder.encode((String) entry.getValue(), "UTF-8");
+            paramsList.add(temp);
+        }
+        return "?" + String.join("&", paramsList);
     }
 }
