@@ -64,7 +64,6 @@ public class ObjectsTest {
         assertEquals("", ur.toString());
     }
 
-
     @Test
     public void testRetrieveCustomObjects() throws RequiredParamsException {
         Objects obj = ontraport.objects();

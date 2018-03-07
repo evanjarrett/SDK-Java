@@ -7,10 +7,25 @@ public class Meta extends AbstractResponse {
 
     public class Data implements AbstractResponse.Data {
         String name;
+        String type;
+        String icon;
+        String theme;
         Map<String, Field> fields;
 
         public String getName() {
             return name;
+        }
+
+        public String getType() {
+            return type;
+        }
+
+        public String getIcon() {
+            return icon;
+        }
+
+        public String getTheme() {
+            return theme;
         }
 
         public Map<String, Field> getFields() {
