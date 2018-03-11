@@ -40,6 +40,12 @@ public abstract class AbstractObject {
         this.client = client;
     }
 
+    public AbstractObject(Ontraport client, String endpoint, String endpointPlural) {
+        this.client = client;
+        setEndpoint(endpoint);
+        setEndpointPlural(endpointPlural);
+    }
+
     protected String getEndpoint() {
         return _endpoint;
     }
