@@ -60,7 +60,7 @@ public class Ontraport {
         return _httpClient;
     }
 
-    public CustomObjects custom() {
+    public CustomObjects custom(int objectId) {
 //        try {
 //            if (_customObjects.isEmpty()) {
 //                _customObjects.put(objects().retrieveCustomObjects(null));
@@ -68,7 +68,7 @@ public class Ontraport {
 //        }
 //        catch (RequiredParamsException ignored) {
 //        }
-        CustomObjects obj = new CustomObjects(this);
+        CustomObjects obj = new CustomObjects(this, objectId);
         _apiInstances.put("customObjects", obj);
         return obj;
     }

@@ -1,6 +1,5 @@
 package com.ontraport.sdk.objects;
 
-import com.google.gson.Gson;
 import com.ontraport.sdk.Ontraport;
 import com.ontraport.sdk.exceptions.RequiredParamsException;
 import com.ontraport.sdk.http.ListResponse;
@@ -33,10 +32,9 @@ public abstract class AbstractObject {
     }
 
     protected Ontraport client;
-    protected Gson gson = new Gson();
-
     protected String _endpoint;
     protected String _endpointPlural;
+    protected int objectID = -1;
 
     public AbstractObject(Ontraport client) {
         this.client = client;
@@ -132,6 +130,10 @@ public abstract class AbstractObject {
             String method_name = Thread.currentThread().getStackTrace()[2].getMethodName();
             Method m = getClass().getMethod(method_name, RequestParams.class);
             String[] requiredParams = m.getAnnotation(Required.class).params();
+
+            if (objectID >= 0) {
+                params.put("objectID", objectID);
+            }
 
             ArrayList<String> missingParams = new ArrayList<>();
 
