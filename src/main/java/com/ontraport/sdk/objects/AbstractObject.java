@@ -152,7 +152,7 @@ public abstract class AbstractObject {
                 throw new RequiredParamsException(String.join(",", missingParams));
             }
         }
-        catch (NoSuchMethodException ignored) {
+        catch (NoSuchMethodException | NullPointerException ignored) {
         }
     }
 }
