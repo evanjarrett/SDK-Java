@@ -28,15 +28,15 @@ public enum BulkSMSStatus {
         return map.get(bss);
     }
 
+    public static String getNameFromValue(int value) {
+        return map.get(value).getName();
+    }
+
     public int getValue() {
         return value;
     }
 
     public String getName() {
         return name;
-    }
-
-    public String getNameFromValue(int value) {
-        return map.get(value).getName();
     }
 }

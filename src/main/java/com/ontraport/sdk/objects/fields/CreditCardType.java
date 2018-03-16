@@ -30,6 +30,10 @@ public enum CreditCardType {
         return map.get(cct);
     }
 
+    public static String getNameFromValue(int value) {
+        return map.get(value).getName();
+    }
+
     public int getValue() {
         return value;
     }
@@ -37,14 +41,4 @@ public enum CreditCardType {
     public String getName() {
         return name;
     }
-
-    public String getNameFromValue(int value) {
-        return map.get(value).getName();
-    }
 }
-
-
-
-
-
-
