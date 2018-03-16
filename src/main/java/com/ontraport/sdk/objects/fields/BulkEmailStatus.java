@@ -29,7 +29,7 @@ public enum BulkEmailStatus {
         return map.get(bes);
     }
 
-    public String getNameFromValue(int value) {
+    public static String getNameFromValue(int value) {
         return map.get(value).getName();
     }
 
