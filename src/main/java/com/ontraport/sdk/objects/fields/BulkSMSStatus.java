@@ -1,5 +1,7 @@
 package com.ontraport.sdk.objects.fields;
 
+import com.ontraport.sdk.exceptions.InvalidValueException;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,7 +30,10 @@ public enum BulkSMSStatus {
         return map.get(bss);
     }
 
-    public static String getNameFromValue(int value) {
+    public static String getNameFromValue(int value) throws InvalidValueException {
+        if (!map.containsKey(value)) {
+            throw new InvalidValueException();
+        }
         return map.get(value).getName();
     }
 

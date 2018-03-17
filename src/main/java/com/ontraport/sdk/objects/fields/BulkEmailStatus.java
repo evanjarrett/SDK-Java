@@ -1,5 +1,7 @@
 package com.ontraport.sdk.objects.fields;
 
+import com.ontraport.sdk.exceptions.InvalidValueException;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -8,6 +10,7 @@ public enum BulkEmailStatus {
     OPT_IN(1, "Opted-in"),
     DOUBLE_OPT_IN(2, "Double opt-in"),
     HARD_BOUNCE(-2, "Hard bounce"),
+    UNCONFIRMED(-3, "Unconfirmed"),
     UNDER_REVIEW(-5, "Under review");
 
     private final int value;
@@ -29,7 +32,10 @@ public enum BulkEmailStatus {
         return map.get(bes);
     }
 
-    public static String getNameFromValue(int value) {
+    public static String getNameFromValue(int value) throws InvalidValueException {
+        if (!map.containsKey(value)) {
+            throw new InvalidValueException();
+        }
         return map.get(value).getName();
     }
 
