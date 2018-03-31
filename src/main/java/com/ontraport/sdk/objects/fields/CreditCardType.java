@@ -13,37 +13,37 @@ public enum CreditCardType {
     DISCOVER(4, "Discover"),
     PAYPAL(5, "Paypal");
 
-    private final int value;
-    private final String name;
-    private static Map<Integer, CreditCardType> map = new HashMap<>();
+    private final int _value;
+    private final String _name;
+    private static Map<Integer, CreditCardType> _map = new HashMap<>();
 
     CreditCardType(int value, String name) {
-        this.value = value;
-        this.name = name;
+        this._value = value;
+        this._name = name;
     }
 
     static {
         for (CreditCardType cct : CreditCardType.values()) {
-            map.put(cct.value, cct);
+            _map.put(cct._value, cct);
         }
     }
 
     public static CreditCardType valueOf(int cct) {
-        return map.get(cct);
+        return _map.get(cct);
     }
 
     public static String getNameFromValue(int value) throws InvalidValueException {
-        if (!map.containsKey(value)) {
+        if (!_map.containsKey(value)) {
             throw new InvalidValueException();
         }
-        return map.get(value).getName();
+        return _map.get(value).getName();
     }
 
     public int getValue() {
-        return value;
+        return _value;
     }
 
     public String getName() {
-        return name;
+        return _name;
     }
 }

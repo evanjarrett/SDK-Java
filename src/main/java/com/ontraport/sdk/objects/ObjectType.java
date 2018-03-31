@@ -1,9 +1,13 @@
 package com.ontraport.sdk.objects;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public enum ObjectType {
     CONTACT(0),
     TASK(1),
     USER(2),
+    STAFF(2),
     GROUP(3),
     LOG(4),
     SEQUENCE(5),
@@ -46,10 +50,15 @@ public enum ObjectType {
     LEAD_ROUTER(69),
     GATEWAY(70),
     MARKETING_CAMPAIGN(75),
-    LEAD_SOURCE(76),
-    MEDIUM(77),
-    CONTENT(78),
-    TERM(79),
+    MARKETING_LEAD_SOURCE(76),
+    MARKETING_MEDIUM(77),
+    MARKETING_CONTENT(78),
+    MARKETING_TERM(79),
+    TRACKING_CAMPAIGN(75),
+    TRACKING_LEAD_SOURCE(76),
+    TRACKING_MEDIUM(77),
+    TRACKING_CONTENT(78),
+    TRACKING_TERM(79),
     TRACKED_LINK(80),
     PARTNER_PROGRAM_PRODUCT(87),
     URL_HISTORY(88),
@@ -71,15 +80,27 @@ public enum ObjectType {
     COUPON_PRODUCTS(125),
     TAG_SUBSCRIBER(138),
     CAMPAIGN_BUILDER(140),
+    CAMPAIGN(140),
     DELETED_ORDER(146);
 
     private final int _id;
+    private static Map<Integer, ObjectType> map = new HashMap<>();
 
     ObjectType(final int id) {
         this._id = id;
     }
 
+    static {
+        for (ObjectType o : ObjectType.values()) {
+            map.put(o.getId(), o);
+        }
+    }
+
     public int getId() {
         return _id;
+    }
+
+    public static ObjectType valueOf(int id) {
+        return map.get(id);
     }
 }

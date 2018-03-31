@@ -13,37 +13,37 @@ public enum BulkEmailStatus {
     UNCONFIRMED(-3, "Unconfirmed"),
     UNDER_REVIEW(-5, "Under review");
 
-    private final int value;
-    private final String name;
-    private static Map<Integer, BulkEmailStatus> map = new HashMap<>();
+    private final int _value;
+    private final String _name;
+    private static Map<Integer, BulkEmailStatus> _map = new HashMap<>();
 
     BulkEmailStatus(int value, String name) {
-        this.value = value;
-        this.name = name;
+        this._value = value;
+        this._name = name;
     }
 
     static {
         for (BulkEmailStatus bes : BulkEmailStatus.values()) {
-            map.put(bes.value, bes);
+            _map.put(bes._value, bes);
         }
     }
 
     public static BulkEmailStatus valueOf(int bes) {
-        return map.get(bes);
+        return _map.get(bes);
     }
 
     public static String getNameFromValue(int value) throws InvalidValueException {
-        if (!map.containsKey(value)) {
+        if (!_map.containsKey(value)) {
             throw new InvalidValueException();
         }
-        return map.get(value).getName();
+        return _map.get(value).getName();
     }
 
     public int getValue() {
-        return value;
+        return _value;
     }
 
     public String getName() {
-        return name;
+        return _name;
     }
 }

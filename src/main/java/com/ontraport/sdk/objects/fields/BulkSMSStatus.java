@@ -11,37 +11,37 @@ public enum BulkSMSStatus {
     DOUBLE_OPT_IN(2, "Double opt-in"),
     HARD_BOUNCE(-2, "Hard bounce");
 
-    private final int value;
-    private final String name;
-    private static Map<Integer, BulkSMSStatus> map = new HashMap<>();
+    private final int _value;
+    private final String _name;
+    private static Map<Integer, BulkSMSStatus> _map = new HashMap<>();
 
     BulkSMSStatus(int value, String name) {
-        this.value = value;
-        this.name = name;
+        this._value = value;
+        this._name = name;
     }
 
     static {
         for (BulkSMSStatus bss : BulkSMSStatus.values()) {
-            map.put(bss.value, bss);
+            _map.put(bss._value, bss);
         }
     }
 
     public static BulkSMSStatus valueOf(int bss) {
-        return map.get(bss);
+        return _map.get(bss);
     }
 
     public static String getNameFromValue(int value) throws InvalidValueException {
-        if (!map.containsKey(value)) {
+        if (!_map.containsKey(value)) {
             throw new InvalidValueException();
         }
-        return map.get(value).getName();
+        return _map.get(value).getName();
     }
 
     public int getValue() {
-        return value;
+        return _value;
     }
 
     public String getName() {
-        return name;
+        return _name;
     }
 }
