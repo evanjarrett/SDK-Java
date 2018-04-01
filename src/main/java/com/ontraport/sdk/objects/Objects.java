@@ -119,7 +119,7 @@ public class Objects extends AbstractObject {
     @Required(params = {"ids", "add_list"})
     public SingleResponse addToSequence(RequestParams params) throws RequiredParamsException {
         checkRequiredParams(params);
-        return client.request(params, getEndpointPlural() + "/sequence", "post");
+        return client.request(params, getEndpointPlural() + "/sequence", "put");
     }
 
     @Required(params = {"ids", "remove_list"})
@@ -131,7 +131,7 @@ public class Objects extends AbstractObject {
     @Required(params = {"ids", "add_list"})
     public SingleResponse addTag(RequestParams params) throws RequiredParamsException {
         checkRequiredParams(params);
-        return client.request(params, getEndpointPlural() + "/tag", "post");
+        return client.request(params, getEndpointPlural() + "/tag", "put");
     }
 
     @Required(params = {"ids", "remove_list"})
@@ -155,7 +155,7 @@ public class Objects extends AbstractObject {
     @Required(params = {"ids", "add_list"})
     public MessageResponse subscribe(RequestParams params) throws RequiredParamsException {
         checkRequiredParams(params);
-        return client.request(params, getEndpointPlural() + "/subscribe", "post", MessageResponse.class);
+        return client.request(params, getEndpointPlural() + "/subscribe", "put", MessageResponse.class);
     }
 
     @Required(params = {"ids", "remove_list"})
