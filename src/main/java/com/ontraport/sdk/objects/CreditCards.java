@@ -20,7 +20,7 @@ public class CreditCards extends AbstractObject {
     @Required(params = {"id"})
     public SingleResponse setDefault(RequestParams params) throws RequiredParamsException {
         checkRequiredParams(params);
-        return client.request(params, getEndpoint() + "/default", "put");
+        return _client.request(params, getEndpoint() + "/default", "put");
     }
 
 }

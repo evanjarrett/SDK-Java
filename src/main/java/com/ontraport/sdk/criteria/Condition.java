@@ -4,47 +4,47 @@ import java.util.ArrayList;
 import java.util.List;
 
 class Field {
-    private String field;
+    private String _field;
 
     protected Field(String field) {
-        this.field = field;
+        _field = field;
     }
 }
 
 class Value<T> {
-    private List<Value<T>> list = null;
-    private T value = null;
+    private List<Value<T>> _list = null;
+    private T _value = null;
 
     protected Value(T value) {
-        this.value = value;
+        _value = value;
     }
 
     protected Value(List<Value<T>> list) {
-        this.list = list;
+        _list = list;
     }
 }
 
 public class Condition<T> {
-    private Field field;
-    private String op;
-    private Value<T> value;
+    private Field _field;
+    private String _op;
+    private Value<T> _value;
 
     public Condition (String field, Operator op, T value) {
-        this.field = new Field(field);
-        this.op = op.toString();
-        this.value = new Value<>(value);
+        _field = new Field(field);
+        _op = op.toString();
+        _value = new Value<>(value);
     }
 
     public Condition (String field, Operator op, List<T> value) {
-        this.field = new Field(field);
-        this.op = op.toString();
+        _field = new Field(field);
+        _op = op.toString();
 
         ArrayList<Value<T>> tmp = new ArrayList<>();
         for (T v : value) {
             Value<T> val = new Value<>(v);
             tmp.add(val);
         }
-        this.value = new Value<>(tmp);
+        _value = new Value<>(tmp);
     }
 
 }

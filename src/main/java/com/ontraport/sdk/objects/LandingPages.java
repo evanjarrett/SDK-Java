@@ -20,6 +20,6 @@ public class LandingPages extends AbstractObject {
     @Required(params = {"id"})
     public SingleResponse getHostedURL(RequestParams params) throws RequiredParamsException {
         checkRequiredParams(params);
-        return client.request(params, "landingPage/getHostedURL", "get");
+        return _client.request(params, "landingPage/getHostedURL", "get");
     }
 }

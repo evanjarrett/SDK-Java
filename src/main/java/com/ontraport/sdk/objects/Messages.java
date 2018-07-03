@@ -20,12 +20,12 @@ public class Messages extends AbstractObject {
     @Required(params = {"type"})
     public SingleResponse create(RequestParams params) throws RequiredParamsException {
         checkRequiredParams(params);
-        return client.request(params, getEndpoint().toLowerCase(), "post");
+        return _client.request(params, getEndpoint().toLowerCase(), "post");
     }
 
     @Required(params = {"id", "type"})
     public SingleResponse deleteSingle(RequestParams params) throws RequiredParamsException {
         checkRequiredParams(params);
-        return client.request(params, getEndpoint().toLowerCase(), "put");
+        return _client.request(params, getEndpoint().toLowerCase(), "put");
     }
 }

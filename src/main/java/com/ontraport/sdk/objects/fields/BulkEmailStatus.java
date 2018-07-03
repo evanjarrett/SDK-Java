@@ -18,8 +18,8 @@ public enum BulkEmailStatus {
     private static Map<Integer, BulkEmailStatus> _map = new HashMap<>();
 
     BulkEmailStatus(int value, String name) {
-        this._value = value;
-        this._name = name;
+        _value = value;
+        _name = name;
     }
 
     static {

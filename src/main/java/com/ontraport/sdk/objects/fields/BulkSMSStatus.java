@@ -16,8 +16,8 @@ public enum BulkSMSStatus {
     private static Map<Integer, BulkSMSStatus> _map = new HashMap<>();
 
     BulkSMSStatus(int value, String name) {
-        this._value = value;
-        this._name = name;
+        _value = value;
+        _name = name;
     }
 
     static {
