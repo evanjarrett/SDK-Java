@@ -4,6 +4,8 @@ import com.ontraport.sdk.http.RequestParams;
 import com.ontraport.sdk.models.Requestable;
 import com.ontraport.sdk.objects.fields.FieldType;
 
+import java.util.Map;
+
 public class ObjectField implements Requestable {
 
     private int _id;
@@ -12,6 +14,7 @@ public class ObjectField implements Requestable {
     private FieldType _type;
     private boolean _required;
     private boolean _unique;
+    private DropOption _drop_options;
 
     public ObjectField(String alias, FieldType type) {
         new ObjectField(alias, type, false, false);
@@ -46,6 +49,18 @@ public class ObjectField implements Requestable {
 
     public void setField(String field) {
         _field = field;
+    }
+
+    public void addDropOptions(Map<String, String> options) {
+        _drop_options = new DropOption("add", options);
+    }
+
+    public void removeDropOptions(Map<String, String> options) {
+        _drop_options = new DropOption("remove", options);
+    }
+
+    public void replaceDropOptions(Map<String, String> options) {
+        _drop_options = new DropOption("replace", options);
     }
 
     @Override
