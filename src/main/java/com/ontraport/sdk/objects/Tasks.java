@@ -19,22 +19,22 @@ public class Tasks extends AbstractObject {
 
     public SingleResponse assign(RequestParams params) throws RequiredParamsException {
         checkRequiredParams(params);
-        return client.request(params, getEndpoint().toLowerCase() + "/assign", "get");
+        return _client.request(params, getEndpoint().toLowerCase() + "/assign", "get");
     }
 
     public SingleResponse cancel(RequestParams params) throws RequiredParamsException {
         checkRequiredParams(params);
-        return client.request(params, getEndpoint().toLowerCase() + "/cancel", "get");
+        return _client.request(params, getEndpoint().toLowerCase() + "/cancel", "get");
     }
 
     public SingleResponse complete(RequestParams params) throws RequiredParamsException {
         checkRequiredParams(params);
-        return client.request(params, getEndpoint().toLowerCase() + "/complete", "get");
+        return _client.request(params, getEndpoint().toLowerCase() + "/complete", "get");
     }
 
     public SingleResponse reschedule(RequestParams params) throws RequiredParamsException {
         checkRequiredParams(params);
-        return client.request(params, getEndpoint().toLowerCase() + "/reschedule", "get");
+        return _client.request(params, getEndpoint().toLowerCase() + "/reschedule", "get");
     }
 
 

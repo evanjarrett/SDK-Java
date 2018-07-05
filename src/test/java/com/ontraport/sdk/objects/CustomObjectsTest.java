@@ -19,7 +19,7 @@ public class CustomObjectsTest {
 
     @Test
     public void testRetrieveOne() throws RequiredParamsException {
-        CustomObjects obj = ontraport.custom();
+        CustomObjects obj = ontraport.custom(10000);
         RequestParams map = new RequestParams();
         map.put("id", "10000");
         assertEquals("", obj.retrieveSingle(map));
@@ -27,14 +27,14 @@ public class CustomObjectsTest {
 
     @Test
     public void testRetrieveMultiple() throws RequiredParamsException {
-        CustomObjects obj = ontraport.custom();
+        CustomObjects obj = ontraport.custom(10000);
         RequestParams map = new RequestParams();
         assertEquals("", obj.retrieveMultiple(map));
     }
 
     @Test(expected = RequiredParamsException.class)
     public void testRetrieveOneBadParams() throws RequiredParamsException {
-        CustomObjects obj = ontraport.custom();
+        CustomObjects obj = ontraport.custom(10000);
         RequestParams map = new RequestParams();
         map.put("bogus", "10000");
         obj.retrieveSingle(map);

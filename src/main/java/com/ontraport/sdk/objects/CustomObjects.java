@@ -6,7 +6,7 @@ public class CustomObjects extends Objects {
 
     public CustomObjects(Ontraport client, int objectID) {
         super(client);
-        this.objectID = objectID;
+        _objectID = objectID;
     }
 
 }

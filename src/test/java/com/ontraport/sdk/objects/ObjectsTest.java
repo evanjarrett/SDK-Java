@@ -20,7 +20,7 @@ public class ObjectsTest {
 
     @Before
     public void setUp() {
-        //when(client.httpRequest(any(RequestParams.class), anyString(), anyString())).thenReturn();
+        //when(_client.httpRequest(any(RequestParams.class), anyString(), anyString())).thenReturn();
         ontraport = new Ontraport("123", "123", new URLClient());
     }
 

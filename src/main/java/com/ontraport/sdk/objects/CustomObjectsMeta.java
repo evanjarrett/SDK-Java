@@ -12,7 +12,7 @@ public class CustomObjectsMeta extends AbstractObject {
     }
 
     public CustomObjectResponse meta(RequestParams params) throws RequiredParamsException {
-        this.checkRequiredParams(params);
-        return this.client.request(params, this.getEndpointPlural(), "get", CustomObjectResponse.class);
+        checkRequiredParams(params);
+        return _client.request(params, getEndpointPlural(), "get", CustomObjectResponse.class);
     }
 }

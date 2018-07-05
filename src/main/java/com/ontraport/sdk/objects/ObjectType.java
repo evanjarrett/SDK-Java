@@ -87,7 +87,7 @@ public enum ObjectType {
     private static Map<Integer, ObjectType> map = new HashMap<>();
 
     ObjectType(final int id) {
-        this._id = id;
+        _id = id;
     }
 
     static {

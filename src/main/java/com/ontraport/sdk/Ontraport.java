@@ -28,13 +28,13 @@ public class Ontraport {
     private String _apiKey;
 
     public Ontraport(String siteID, String apiKey) {
-        this.setCredentials(siteID, apiKey);
-        this.setHttpClient(createHttpClient());
+        setCredentials(siteID, apiKey);
+        setHttpClient(createHttpClient());
     }
 
     public Ontraport(String siteID, String apiKey, Client client) {
-        this.setCredentials(siteID, apiKey, client);
-        this.setHttpClient(client);
+        setCredentials(siteID, apiKey, client);
+        setHttpClient(client);
     }
 
     public void setCredentials(String siteID, String apiKey) {

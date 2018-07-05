@@ -95,72 +95,72 @@ public class Objects extends AbstractObject {
     @Required(params = {"objectID"})
     public ListResponse retrieveAllWithTag(RequestParams params) throws RequiredParamsException {
         checkRequiredParams(params);
-        return client.request(params, getEndpointPlural() + "/tag", "get", ListResponse.class);
+        return _client.request(params, getEndpointPlural() + "/tag", "get", ListResponse.class);
     }
 
     @Required(params = {"objectID", "email"})
     public SingleResponse retrieveIdByEmail(RequestParams params) throws RequiredParamsException {
         checkRequiredParams(params);
-        return client.request(params, getEndpointPlural() + "/getByEmail", "get");
+        return _client.request(params, getEndpointPlural() + "/getByEmail", "get");
     }
 
     @Required(params = {"ids"})
     public SingleResponse pause(RequestParams params) throws RequiredParamsException {
         checkRequiredParams(params);
-        return client.request(params, getEndpointPlural() + "/pause", "post");
+        return _client.request(params, getEndpointPlural() + "/pause", "post");
     }
 
     @Required(params = {"ids"})
     public SingleResponse unpause(RequestParams params) throws RequiredParamsException {
         checkRequiredParams(params);
-        return client.request(params, getEndpointPlural() + "/unpause", "post");
+        return _client.request(params, getEndpointPlural() + "/unpause", "post");
     }
 
     @Required(params = {"ids", "add_list"})
     public SingleResponse addToSequence(RequestParams params) throws RequiredParamsException {
         checkRequiredParams(params);
-        return client.request(params, getEndpointPlural() + "/sequence", "put");
+        return _client.request(params, getEndpointPlural() + "/sequence", "put");
     }
 
     @Required(params = {"ids", "remove_list"})
     public SingleResponse removeFromSequence(RequestParams params) throws RequiredParamsException {
         checkRequiredParams(params);
-        return client.request(params, getEndpointPlural() + "/sequence", "delete");
+        return _client.request(params, getEndpointPlural() + "/sequence", "delete");
     }
 
     @Required(params = {"ids", "add_list"})
     public SingleResponse addTag(RequestParams params) throws RequiredParamsException {
         checkRequiredParams(params);
-        return client.request(params, getEndpointPlural() + "/tag", "put");
+        return _client.request(params, getEndpointPlural() + "/tag", "put");
     }
 
     @Required(params = {"ids", "remove_list"})
     public SingleResponse removeTag(RequestParams params) throws RequiredParamsException {
         checkRequiredParams(params);
-        return client.request(params, getEndpointPlural() + "/tag", "delete");
+        return _client.request(params, getEndpointPlural() + "/tag", "delete");
     }
 
     @Required(params = {"ids", "add_names"})
     public MessageResponse addTagByName(RequestParams params) throws RequiredParamsException {
         checkRequiredParams(params);
-        return client.request(params, getEndpointPlural() + "/tagByName", "put", MessageResponse.class);
+        return _client.request(params, getEndpointPlural() + "/tagByName", "put", MessageResponse.class);
     }
 
     @Required(params = {"ids", "remove_names"})
     public MessageResponse removeTagByName(RequestParams params) throws RequiredParamsException {
         checkRequiredParams(params);
-        return client.request(params, getEndpointPlural() + "/tagByName", "delete", MessageResponse.class);
+        return _client.request(params, getEndpointPlural() + "/tagByName", "delete", MessageResponse.class);
     }
 
     @Required(params = {"ids", "add_list"})
     public MessageResponse subscribe(RequestParams params) throws RequiredParamsException {
         checkRequiredParams(params);
-        return client.request(params, getEndpointPlural() + "/subscribe", "put", MessageResponse.class);
+        return _client.request(params, getEndpointPlural() + "/subscribe", "put", MessageResponse.class);
     }
 
     @Required(params = {"ids", "remove_list"})
     public MessageResponse unsubscribe(RequestParams params) throws RequiredParamsException {
         checkRequiredParams(params);
-        return client.request(params, getEndpointPlural() + "/subscribe", "delete", MessageResponse.class);
+        return _client.request(params, getEndpointPlural() + "/subscribe", "delete", MessageResponse.class);
     }
 }

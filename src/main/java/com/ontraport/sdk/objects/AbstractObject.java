@@ -21,8 +21,8 @@ public abstract class AbstractObject {
 
         private final String _ct;
 
-        ContentType(final String _ct) {
-            this._ct = _ct;
+        ContentType(final String ct) {
+            _ct = ct;
         }
 
         public String toString() {
@@ -31,17 +31,17 @@ public abstract class AbstractObject {
 
     }
 
-    protected Ontraport client;
+    protected Ontraport _client;
     protected String _endpoint;
     protected String _endpointPlural;
-    protected int objectID = -1;
+    protected int _objectID = -1;
 
     public AbstractObject(Ontraport client) {
-        this.client = client;
+        _client = client;
     }
 
     public AbstractObject(Ontraport client, String endpoint, String endpointPlural) {
-        this.client = client;
+        _client = client;
         setEndpoint(endpoint);
         setEndpointPlural(endpointPlural);
     }
@@ -64,23 +64,23 @@ public abstract class AbstractObject {
 
     public ObjectInfo retrieveCollectionInfo(RequestParams params) throws RequiredParamsException {
         checkRequiredParams(params);
-        return client.request(params, getEndpointPlural() + "/getInfo", "get", ObjectInfo.class);
+        return _client.request(params, getEndpointPlural() + "/getInfo", "get", ObjectInfo.class);
     }
 
     public Meta retrieveMeta(RequestParams params) throws RequiredParamsException {
         checkRequiredParams(params);
-        return client.request(params, getEndpointPlural() + "/meta", "get", Meta.class);
+        return _client.request(params, getEndpointPlural() + "/meta", "get", Meta.class);
     }
 
     @Required(params = {"id"})
     public SingleResponse retrieveSingle(RequestParams params) throws RequiredParamsException {
         checkRequiredParams(params);
-        return client.request(params, getEndpoint(), "get");
+        return _client.request(params, getEndpoint(), "get");
     }
 
     public ListResponse retrieveMultiple(RequestParams params) throws RequiredParamsException {
         checkRequiredParams(params);
-        return client.request(params, getEndpointPlural(), "get", ListResponse.class);
+        return _client.request(params, getEndpointPlural(), "get", ListResponse.class);
     }
 
     public ArrayList<ListResponse> retrieveMultiplePaginated(RequestParams params) throws RequiredParamsException {
@@ -106,29 +106,29 @@ public abstract class AbstractObject {
 
     public SingleResponse create(RequestParams params) throws RequiredParamsException {
         checkRequiredParams(params);
-        return client.request(params, getEndpointPlural(), "post");
+        return _client.request(params, getEndpointPlural(), "post");
     }
 
     @Required(params = {"id"})
     public UpdateResponse update(RequestParams params) throws RequiredParamsException {
         checkRequiredParams(params);
-        return client.request(params, getEndpointPlural(), "put", UpdateResponse.class);
+        return _client.request(params, getEndpointPlural(), "put", UpdateResponse.class);
     }
 
     public SingleResponse saveorupdate(RequestParams params) throws RequiredParamsException {
         checkRequiredParams(params);
-        return client.request(params, getEndpointPlural() + "/saveorupdate", "post");
+        return _client.request(params, getEndpointPlural() + "/saveorupdate", "post");
     }
 
     @Required(params = {"id"})
     public SingleResponse deleteSingle(RequestParams params) throws RequiredParamsException {
         checkRequiredParams(params);
-        return client.request(params, getEndpoint(), "delete");
+        return _client.request(params, getEndpoint(), "delete");
     }
 
     public SingleResponse deleteMultiple(RequestParams params) throws RequiredParamsException {
         checkRequiredParams(params);
-        return client.request(params, getEndpointPlural(), "delete");
+        return _client.request(params, getEndpointPlural(), "delete");
     }
 
     protected void checkRequiredParams(RequestParams params) throws RequiredParamsException {
@@ -137,8 +137,8 @@ public abstract class AbstractObject {
             Method m = getClass().getMethod(method_name, RequestParams.class);
             String[] requiredParams = m.getAnnotation(Required.class).params();
 
-            if (objectID >= 0) {
-                params.put("objectID", objectID);
+            if (_objectID >= 0) {
+                params.put("objectID", _objectID);
             }
 
             ArrayList<String> missingParams = new ArrayList<>();

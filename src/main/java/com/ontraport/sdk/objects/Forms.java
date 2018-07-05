@@ -20,6 +20,6 @@ public class Forms extends AbstractObject {
     @Required(params = {"id"})
     public SingleResponse retrieveSmartFormHTML(RequestParams params) throws RequiredParamsException {
         checkRequiredParams(params);
-        return client.request(params, getEndpoint().toLowerCase(), "get");
+        return _client.request(params, getEndpoint().toLowerCase(), "get");
     }
 }

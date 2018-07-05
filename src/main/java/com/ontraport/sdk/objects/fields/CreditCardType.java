@@ -18,8 +18,8 @@ public enum CreditCardType {
     private static Map<Integer, CreditCardType> _map = new HashMap<>();
 
     CreditCardType(int value, String name) {
-        this._value = value;
-        this._name = name;
+        _value = value;
+        _name = name;
     }
 
     static {

@@ -14,8 +14,8 @@ public enum Operator {
 
     private final String _op;
 
-    Operator(final String _op) {
-        this._op = _op;
+    Operator(final String op) {
+        _op = op;
     }
 
     public String toString() {
