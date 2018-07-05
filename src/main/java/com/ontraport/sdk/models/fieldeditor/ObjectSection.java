@@ -1,5 +1,6 @@
 package com.ontraport.sdk.models.fieldeditor;
 
+import com.google.gson.Gson;
 import com.ontraport.sdk.exceptions.FieldEditorException;
 import com.ontraport.sdk.http.RequestParams;
 import com.ontraport.sdk.models.Requestable;
@@ -11,17 +12,17 @@ public class ObjectSection implements Requestable {
 
     private String _name;
     private String _description;
-    private Column[] _columns = new Column[3];
+    private Column[] _columns = {new Column(), new Column(), new Column()};
 
-    public ObjectSection(String name, List<ObjectField>[] fields) {
+    public ObjectSection(String name, Column[] fields) {
         new ObjectSection(name, "", fields);
     }
 
-    public ObjectSection(String name, String description, List<ObjectField>[] fields) {
+    public ObjectSection(String name, String description, Column[] fields) {
         _name = name;
         _description = description;
         for (int i = 0; i < fields.length && i < 3; i++) {
-            _columns[i] = (Column) fields[i];
+            _columns[i] = fields[i];
         }
     }
 
@@ -64,10 +65,35 @@ public class ObjectSection implements Requestable {
 
     @Override
     public RequestParams toRequestParams() {
-        return null;
+        RequestParams params = new RequestParams();
+        params.put("name", _name);
+        params.put("description", _description);
+
+        List<List<RequestParams>> field_map = new ArrayList<>(3);
+        for (int i = 0; i < _columns.length; i++) {
+            field_map.add(_columns[i].toRequestParams());
+        }
+        params.put("fields", field_map);
+        return params;
     }
 
-    private class Column extends ArrayList<ObjectField> {
+    @Override
+    public String toString() {
+        return new Gson().toJson(toRequestParams());
+    }
 
+    public static class Column extends ArrayList<ObjectField> {
+
+        public Column() {
+            super();
+        }
+
+        public List<RequestParams> toRequestParams() {
+            List<RequestParams> fields = new ArrayList<>(size());
+            for (ObjectField field : this) {
+                fields.add(field.toRequestParams());
+            }
+            return fields;
+        }
     }
 }

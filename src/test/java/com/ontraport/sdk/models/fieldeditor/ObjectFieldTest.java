@@ -12,7 +12,7 @@ import static org.mockito.Mockito.when;
 
 public class ObjectFieldTest {
 
-    public ObjectField text_field;
+    private ObjectField text_field;
 
     @Before
     public void setUp() {
