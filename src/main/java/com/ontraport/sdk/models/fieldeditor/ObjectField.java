@@ -1,5 +1,6 @@
-package com.ontraport.sdk.models.FieldEditor;
+package com.ontraport.sdk.models.fieldeditor;
 
+import com.google.gson.Gson;
 import com.ontraport.sdk.http.RequestParams;
 import com.ontraport.sdk.models.Requestable;
 import com.ontraport.sdk.objects.fields.FieldType;
@@ -65,10 +66,24 @@ public class ObjectField implements Requestable {
 
     @Override
     public RequestParams toRequestParams() {
-        return null;
+        RequestParams params = new RequestParams();
+        params.put("alias", getAlias());
+        params.put("type", _type.getType());
+        params.put("required", _required);
+        params.put("unique", _unique);
+        if (_drop_options != null) {
+            params.put("options", _drop_options);
+        }
+        if (getId() > 0) {
+            params.put("id", getId());
+        }
+        if (getField() != null) {
+            params.put("field", getField());
+        }
+        return params;
     }
 
-    public void expandFieldType() {
+    public void expandTextType() {
         if (_type.equals(FieldType.TEXT)) {
             _type = FieldType.LONGTEXT;
         }
@@ -76,7 +91,17 @@ public class ObjectField implements Requestable {
 
     @Override
     public String toString() {
-        return getField();
+        return new Gson().toJson(toRequestParams());
     }
 
+    public class DropOption {
+
+        private String _key;
+        private Map<String, String> _values;
+
+        public DropOption(String key, Map<String, String> values) {
+            _key = key;
+            _values = values;
+        }
+    }
 }

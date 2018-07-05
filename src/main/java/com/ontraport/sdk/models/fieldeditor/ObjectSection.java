@@ -1,4 +1,4 @@
-package com.ontraport.sdk.models.FieldEditor;
+package com.ontraport.sdk.models.fieldeditor;
 
 import com.ontraport.sdk.exceptions.FieldEditorException;
 import com.ontraport.sdk.http.RequestParams;
