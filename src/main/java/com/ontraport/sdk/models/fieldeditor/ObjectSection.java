@@ -2,6 +2,7 @@ package com.ontraport.sdk.models.fieldeditor;
 
 import com.google.gson.Gson;
 import com.ontraport.sdk.exceptions.FieldEditorException;
+import com.ontraport.sdk.http.FieldEditorResponse;
 import com.ontraport.sdk.http.RequestParams;
 import com.ontraport.sdk.models.Requestable;
 
@@ -13,6 +14,10 @@ public class ObjectSection implements Requestable {
     private String _name;
     private String _description;
     private Column[] _columns = {new Column(), new Column(), new Column()};
+
+    public ObjectSection(String name, String description) {
+        new ObjectSection(name, "", _columns);
+    }
 
     public ObjectSection(String name, Column[] fields) {
         new ObjectSection(name, "", fields);
@@ -41,6 +46,10 @@ public class ObjectSection implements Requestable {
         return null;
     }
 
+    public void putFieldInColumn(int index, ObjectField field) {
+        _columns[index].add(field);
+    }
+
     /**
      * @param index  The column index between 0 and 2
      * @param fields A list of fields to append to the column at the given index
@@ -61,6 +70,20 @@ public class ObjectSection implements Requestable {
             }
         }
         throw new FieldEditorException("Could not find an existing field:" + field.toString() + "in this Section.");
+    }
+
+    public ObjectSection createFromResponse(FieldEditorResponse response) {
+        FieldEditorResponse.Data data = response.getData();
+        List<FieldEditorResponse.Field>[] columns = data.getFields();
+
+        ObjectSection section = new ObjectSection(data.getName(), data.getDescription());
+
+        for (int i = 0; i < columns.length && i < 3; i++) {
+            for (FieldEditorResponse.Field field : columns[i]) {
+                section.putFieldInColumn(i, ObjectField.createFromResponse(field));
+            }
+        }
+        return section;
     }
 
     @Override

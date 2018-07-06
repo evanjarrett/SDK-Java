@@ -1,6 +1,7 @@
 package com.ontraport.sdk.models.fieldeditor;
 
 import com.google.gson.Gson;
+import com.ontraport.sdk.http.FieldEditorResponse;
 import com.ontraport.sdk.http.RequestParams;
 import com.ontraport.sdk.models.Requestable;
 import com.ontraport.sdk.objects.fields.FieldType;
@@ -26,6 +27,10 @@ public class ObjectField implements Requestable {
         _type = type;
         _required = required;
         _unique = unique;
+    }
+
+    public static ObjectField createFromResponse(FieldEditorResponse.Field field) {
+        return null;
     }
 
     public int getId() {
