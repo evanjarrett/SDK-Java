@@ -30,7 +30,12 @@ public class ObjectField implements Requestable {
     }
 
     public static ObjectField createFromResponse(FieldEditorResponse.Field field) {
-        return null;
+        String str_type = field.getType();
+        FieldType type = FieldType.typeOf(str_type);
+        ObjectField object_field = new ObjectField(field.getAlias(), type, field.isRequired(), field.isUnique());
+        object_field.setId(field.getId());
+        object_field.setField(field.getField());
+        return object_field;
     }
 
     public int getId() {
