@@ -42,5 +42,30 @@ public abstract class FieldEditorResponse extends AbstractResponse {
         String unique;
         String editable;
         Map<String, String> options;
+        
+        public Integer getId() {
+            return Integer.parseInt(id);
+        }
+        
+        public String getAlias() {
+            return alias;
+        }
+        
+        public String getField() {
+            return field;
+        }
+        
+        public String getType() {
+            return type;
+        }
+        
+        public boolean isRequired() {
+            return required.equals("1");
+        }
+
+        public boolean isUnique() {
+            return unique.equals("1");
+        }
+        
     }
 }
