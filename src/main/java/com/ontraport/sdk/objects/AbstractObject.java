@@ -2,6 +2,7 @@ package com.ontraport.sdk.objects;
 
 import com.ontraport.sdk.Ontraport;
 import com.ontraport.sdk.exceptions.RequiredParamsException;
+import com.ontraport.sdk.http.FieldEditorResponse;
 import com.ontraport.sdk.http.ListResponse;
 import com.ontraport.sdk.http.Meta;
 import com.ontraport.sdk.http.ObjectInfo;
@@ -129,6 +130,26 @@ public abstract class AbstractObject {
     public SingleResponse deleteMultiple(RequestParams params) throws RequiredParamsException {
         checkRequiredParams(params);
         return _client.request(params, getEndpointPlural(), "delete");
+    }
+
+    public FieldEditorResponse retrieveFields(RequestParams params) throws RequiredParamsException {
+        checkRequiredParams(params);
+        return _client.request(params, getEndpointPlural() + "/fieldeditor", "get", FieldEditorResponse.class);
+    }
+
+    public FieldEditorResponse createFields(RequestParams params) throws RequiredParamsException {
+        checkRequiredParams(params);
+        return _client.request(params, getEndpointPlural() + "/fieldeditor", "post", FieldEditorResponse.class);
+    }
+
+    public FieldEditorResponse updateFields(RequestParams params) throws RequiredParamsException {
+        checkRequiredParams(params);
+        return _client.request(params, getEndpointPlural() + "/fieldeditor", "put", FieldEditorResponse.class);
+    }
+
+    public FieldEditorResponse deleteFields(RequestParams params) throws RequiredParamsException {
+        checkRequiredParams(params);
+        return _client.request(params, getEndpointPlural() + "/fieldeditor", "delete", FieldEditorResponse.class);
     }
 
     protected void checkRequiredParams(RequestParams params) throws RequiredParamsException {

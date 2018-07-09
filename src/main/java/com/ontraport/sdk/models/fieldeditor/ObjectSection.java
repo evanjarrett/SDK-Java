@@ -16,11 +16,11 @@ public class ObjectSection implements Requestable {
     private Column[] _columns = {new Column(), new Column(), new Column()};
 
     public ObjectSection(String name, String description) {
-        new ObjectSection(name, "", _columns);
+        this(name, "", new Column[]{new Column(), new Column(), new Column()});
     }
 
     public ObjectSection(String name, Column[] fields) {
-        new ObjectSection(name, "", fields);
+        this(name, "", fields);
     }
 
     public ObjectSection(String name, String description, Column[] fields) {
@@ -72,10 +72,9 @@ public class ObjectSection implements Requestable {
         throw new FieldEditorException("Could not find an existing field:" + field.toString() + "in this Section.");
     }
 
-    public ObjectSection createFromResponse(FieldEditorResponse response) {
+    public static ObjectSection createFromResponse(FieldEditorResponse response) {
         FieldEditorResponse.Data data = response.getData();
         List<FieldEditorResponse.Field>[] columns = data.getFields();
-
         ObjectSection section = new ObjectSection(data.getName(), data.getDescription());
 
         for (int i = 0; i < columns.length && i < 3; i++) {

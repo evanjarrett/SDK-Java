@@ -19,7 +19,7 @@ public class ObjectField implements Requestable {
     private DropOption _drop_options;
 
     public ObjectField(String alias, FieldType type) {
-        new ObjectField(alias, type, false, false);
+        this(alias, type, false, false);
     }
 
     public ObjectField(String alias, FieldType type, boolean required, boolean unique) {

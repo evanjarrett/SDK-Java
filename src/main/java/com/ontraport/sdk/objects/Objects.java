@@ -2,6 +2,7 @@ package com.ontraport.sdk.objects;
 
 import com.ontraport.sdk.Ontraport;
 import com.ontraport.sdk.exceptions.RequiredParamsException;
+import com.ontraport.sdk.http.FieldEditorResponse;
 import com.ontraport.sdk.http.ListResponse;
 import com.ontraport.sdk.http.MessageResponse;
 import com.ontraport.sdk.http.Meta;
@@ -102,6 +103,30 @@ public class Objects extends AbstractObject {
     public SingleResponse retrieveIdByEmail(RequestParams params) throws RequiredParamsException {
         checkRequiredParams(params);
         return _client.request(params, getEndpointPlural() + "/getByEmail", "get");
+    }
+
+    @Required(params = {"objectID"})
+    public FieldEditorResponse retrieveFields(RequestParams params) throws RequiredParamsException {
+        checkRequiredParams(params);
+        return _client.request(params, getEndpointPlural() + "/fieldeditor", "get", FieldEditorResponse.class);
+    }
+
+    @Required(params = {"objectID"})
+    public FieldEditorResponse createFields(RequestParams params) throws RequiredParamsException {
+        checkRequiredParams(params);
+        return _client.request(params, getEndpointPlural() + "/fieldeditor", "post", FieldEditorResponse.class);
+    }
+
+    @Required(params = {"objectID"})
+    public FieldEditorResponse updateFields(RequestParams params) throws RequiredParamsException {
+        checkRequiredParams(params);
+        return _client.request(params, getEndpointPlural() + "/fieldeditor", "put", FieldEditorResponse.class);
+    }
+
+    @Required(params = {"objectID"})
+    public FieldEditorResponse deleteFields(RequestParams params) throws RequiredParamsException {
+        checkRequiredParams(params);
+        return _client.request(params, getEndpointPlural() + "/fieldeditor", "delete", FieldEditorResponse.class);
     }
 
     @Required(params = {"ids"})

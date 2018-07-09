@@ -1,7 +1,9 @@
 package com.ontraport.sdk.models.fieldeditor;
 
 import com.google.gson.Gson;
+import com.ontraport.sdk.Ontraport;
 import com.ontraport.sdk.http.RequestParams;
+import com.ontraport.sdk.http.URLClient;
 import com.ontraport.sdk.objects.fields.FieldType;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,9 +15,11 @@ import static org.mockito.Mockito.when;
 public class ObjectFieldTest {
 
     private ObjectField text_field;
+    private Ontraport ontraport;
 
     @Before
     public void setUp() {
+        ontraport = new Ontraport("2_22634", "", new URLClient());
         text_field = new ObjectField("myField", FieldType.TEXT, true, false);
     }
 

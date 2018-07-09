@@ -1,7 +1,11 @@
 package com.ontraport.sdk.models.fieldeditor;
 
 import com.google.gson.Gson;
+import com.ontraport.sdk.Ontraport;
+import com.ontraport.sdk.exceptions.RequiredParamsException;
+import com.ontraport.sdk.http.FieldEditorResponse;
 import com.ontraport.sdk.http.RequestParams;
+import com.ontraport.sdk.http.URLClient;
 import com.ontraport.sdk.objects.fields.FieldType;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,9 +16,11 @@ public class ObjectSectionTest {
 
     private ObjectSection section;
     private ObjectField text_field;
+    private Ontraport ontraport;
 
     @Before
     public void setUp() {
+        ontraport = new Ontraport("2_22634", "", new URLClient());
         text_field = new ObjectField("myField", FieldType.TEXT, true, false);
         ObjectSection.Column[] columns = {new ObjectSection.Column(), new ObjectSection.Column(), new ObjectSection.Column()};
         columns[1] = new ObjectSection.Column();
@@ -25,6 +31,15 @@ public class ObjectSectionTest {
     @Test
     public void testGetFieldByAlias() {
         assertEquals(text_field, section.getFieldByAlias("myField"));
+    }
+
+    @Test
+    public void testCreateFromResponse() throws RequiredParamsException {
+        RequestParams map = new RequestParams();
+        map.put("section", "Contact Information");
+        FieldEditorResponse field_res = ontraport.contacts().retrieveFields(map);
+        ObjectSection section = ObjectSection.createFromResponse(field_res);
+        System.out.println(section.toString());
     }
 
     @Test

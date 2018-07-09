@@ -18,6 +18,9 @@ public enum FieldType {
     TEXT("text"),
     EMAIL("email"),
     SMS("sms"),
+    MERGEFIELD("mergefield"),
+    PARENT("parent"),
+    URL("url"),
     ADDRESS("address");
 
     private final String _type;
