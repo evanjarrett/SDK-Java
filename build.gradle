@@ -1,7 +1,12 @@
-group "ontraport"
-version "1.0"
+plugins {
+    id "java"
+    id "java-gradle-plugin"
+    id "maven-publish"
+    id "com.jfrog.artifactory" version "4.7.5"
+}
 
-apply plugin: "java"
+group = "com.ontraport.sdk"
+version = "0.10." + System.getenv("TRAVIS_BUILD_NUMBER")
 
 sourceCompatibility = 1.8
 
@@ -14,4 +19,47 @@ dependencies {
 
     testImplementation group: "junit", name: "junit", version: "4.12"
     testImplementation "org.mockito:mockito-core:2.15.0"
+}
+
+publishing {
+    publications {
+        pluginMaven(MavenPublication) {
+            from components.java
+        }
+        samplePluginMarkerMaven(MavenPublication) {
+            groupId gradlePlugin.plugins.sample.id
+            artifactId gradlePlugin.plugins.sample.id + ".gradle.plugin"
+            pom.withXml {
+                def dependency = asNode().appendNode('dependencies').appendNode('dependency')
+                dependency.appendNode('groupId', group)
+                dependency.appendNode('artifactId', name)
+                dependency.appendNode('version', version)
+            }
+        }
+    }
+}
+
+artifactory {
+    contextUrl = System.getenv("ARTIFACTORY_URL")
+    publish {
+        repository {
+            repoKey = 'libs'
+            username = System.getenv("ARTIFACTORY_USER")
+            password = System.getenv("ARTIFACTORY_PASSWORD")
+        }
+        defaults {
+            println "Trying to read publications"
+            publications 'pluginMaven', 'samplePluginMarkerMaven'
+            properties = ['Deployed By': System.properties['user.name']]
+            publishBuildInfo = true
+            publishArtifacts = true
+            publishPom = true
+            publishIvy = false
+        }
+    }
+
+    clientConfig.includeEnvVars = true
+    clientConfig.envVarsExcludePatterns = '*pwd*,*password*,*PWD*,*PASSWORD*,*Password,*secret*,*SECRET*,*key*,*KEY*,sonar.login'
+    clientConfig.info.buildName = name
+    clientConfig.info.buildNumber = version
 }
