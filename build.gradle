@@ -6,7 +6,8 @@ plugins {
 }
 
 group = "com.ontraport.sdk"
-version = "0.10." + System.getenv("TRAVIS_BUILD_NUMBER")
+def travis_build = System.getenv("BUILD_NUMBER") ?: "0"
+version = "0.10." + travis_build
 
 sourceCompatibility = 1.8
 
@@ -23,12 +24,9 @@ dependencies {
 
 publishing {
     publications {
-        pluginMaven(MavenPublication) {
-            from components.java
-        }
-        samplePluginMarkerMaven(MavenPublication) {
-            groupId gradlePlugin.plugins.sample.id
-            artifactId gradlePlugin.plugins.sample.id + ".gradle.plugin"
+        artifactPlugin(MavenPublication) {
+            groupId group
+            artifactId name
             pom.withXml {
                 def dependency = asNode().appendNode('dependencies').appendNode('dependency')
                 dependency.appendNode('groupId', group)
@@ -48,8 +46,8 @@ artifactory {
             password = System.getenv("ARTIFACTORY_PASSWORD")
         }
         defaults {
-            println "Trying to read publications"
-            publications 'pluginMaven', 'samplePluginMarkerMaven'
+            println "Building artifact version " + version
+            publications 'artifactPlugin'
             properties = ['Deployed By': System.properties['user.name']]
             publishBuildInfo = true
             publishArtifacts = true
