@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "com.ontraport.sdk"
-def travis_build = System.getenv("BUILD_NUMBER") ?: "0"
+def travis_build = System.getenv("TRAVIS_BUILD_NUMBER") ?: "0"
 version = "0.10." + travis_build
 
 sourceCompatibility = 1.8
@@ -25,14 +25,7 @@ dependencies {
 publishing {
     publications {
         artifactPlugin(MavenPublication) {
-            groupId group
-            artifactId name
-            pom.withXml {
-                def dependency = asNode().appendNode('dependencies').appendNode('dependency')
-                dependency.appendNode('groupId', group)
-                dependency.appendNode('artifactId', name)
-                dependency.appendNode('version', version)
-            }
+            from components.java
         }
     }
 }
