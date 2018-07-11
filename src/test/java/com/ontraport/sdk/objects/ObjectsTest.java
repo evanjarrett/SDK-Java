@@ -3,6 +3,7 @@ package com.ontraport.sdk.objects;
 import com.ontraport.sdk.Ontraport;
 import com.ontraport.sdk.exceptions.RequiredParamsException;
 import com.ontraport.sdk.http.ListResponse;
+import com.ontraport.sdk.http.ObjectInfo;
 import com.ontraport.sdk.http.RequestParams;
 import com.ontraport.sdk.http.SingleResponse;
 import com.ontraport.sdk.http.URLClient;
@@ -32,6 +33,17 @@ public class ObjectsTest {
         map.put("objectID", "0");
 
         SingleResponse res = obj.retrieveSingle(map);
+        System.out.println(res);
+    }
+
+    @Test
+    public void testRetrieveCollectionInfo() throws RequiredParamsException {
+        Objects obj = ontraport.objects();
+        RequestParams map = new RequestParams();
+        map.put("objectID", "0");
+
+        ObjectInfo res = obj.retrieveCollectionInfo(map);
+        ObjectInfo.FieldSettings[] settings = res.getData().getListFieldSettings();
         System.out.println(res);
     }
 
