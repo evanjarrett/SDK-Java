@@ -3,12 +3,14 @@ package com.ontraport.sdk.objects;
 import com.ontraport.sdk.Ontraport;
 import com.ontraport.sdk.exceptions.RequiredParamsException;
 import com.ontraport.sdk.http.FieldEditorResponse;
+import com.ontraport.sdk.http.FieldResponse;
 import com.ontraport.sdk.http.ListResponse;
 import com.ontraport.sdk.http.MessageResponse;
 import com.ontraport.sdk.http.Meta;
 import com.ontraport.sdk.http.ObjectInfo;
 import com.ontraport.sdk.http.RequestParams;
 import com.ontraport.sdk.http.Required;
+import com.ontraport.sdk.http.SectionResponse;
 import com.ontraport.sdk.http.SingleResponse;
 import com.ontraport.sdk.http.UpdateResponse;
 
@@ -108,25 +110,39 @@ public class Objects extends AbstractObject {
     @Required(params = {"objectID"})
     public FieldEditorResponse retrieveFields(RequestParams params) throws RequiredParamsException {
         checkRequiredParams(params);
+        params.remove("section");
+        params.remove("field");
         return _client.request(params, getEndpointPlural() + "/fieldeditor", "get", FieldEditorResponse.class);
     }
 
-    @Required(params = {"objectID"})
-    public FieldEditorResponse createFields(RequestParams params) throws RequiredParamsException {
+    @Required(params = {"objectID", "section"})
+    public SectionResponse retrieveSection(RequestParams params) throws RequiredParamsException {
         checkRequiredParams(params);
-        return _client.request(params, getEndpointPlural() + "/fieldeditor", "post", FieldEditorResponse.class);
+        return _client.request(params, getEndpointPlural() + "/fieldeditor", "get", SectionResponse.class);
+    }
+
+    @Required(params = {"objectID", "field"})
+    public FieldResponse retrieveField(RequestParams params) throws RequiredParamsException {
+        checkRequiredParams(params);
+        return _client.request(params, getEndpointPlural() + "/fieldeditor", "get", FieldResponse.class);
     }
 
     @Required(params = {"objectID"})
-    public FieldEditorResponse updateFields(RequestParams params) throws RequiredParamsException {
+    public SectionResponse createFields(RequestParams params) throws RequiredParamsException {
         checkRequiredParams(params);
-        return _client.request(params, getEndpointPlural() + "/fieldeditor", "put", FieldEditorResponse.class);
+        return _client.request(params, getEndpointPlural() + "/fieldeditor", "post", SectionResponse.class);
     }
 
     @Required(params = {"objectID"})
-    public FieldEditorResponse deleteFields(RequestParams params) throws RequiredParamsException {
+    public SectionResponse updateFields(RequestParams params) throws RequiredParamsException {
         checkRequiredParams(params);
-        return _client.request(params, getEndpointPlural() + "/fieldeditor", "delete", FieldEditorResponse.class);
+        return _client.request(params, getEndpointPlural() + "/fieldeditor", "put", SectionResponse.class);
+    }
+
+    @Required(params = {"objectID"})
+    public SectionResponse deleteFields(RequestParams params) throws RequiredParamsException {
+        checkRequiredParams(params);
+        return _client.request(params, getEndpointPlural() + "/fieldeditor", "delete", SectionResponse.class);
     }
 
     @Required(params = {"ids"})

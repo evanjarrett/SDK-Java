@@ -1,7 +1,7 @@
 package com.ontraport.sdk.models.fieldeditor;
 
 import com.google.gson.Gson;
-import com.ontraport.sdk.http.FieldEditorResponse;
+import com.ontraport.sdk.http.FieldResponse;
 import com.ontraport.sdk.http.RequestParams;
 import com.ontraport.sdk.models.Requestable;
 import com.ontraport.sdk.objects.fields.FieldType;
@@ -29,7 +29,7 @@ public class ObjectField implements Requestable {
         _unique = unique;
     }
 
-    public static ObjectField createFromResponse(FieldEditorResponse.Field field) {
+    public static ObjectField createFromResponse(FieldResponse.Field field) {
         String str_type = field.getType();
         FieldType type = FieldType.typeOf(str_type);
         ObjectField object_field = new ObjectField(field.getAlias(), type, field.isRequired(), field.isUnique());

@@ -2,8 +2,9 @@ package com.ontraport.sdk.models.fieldeditor;
 
 import com.google.gson.Gson;
 import com.ontraport.sdk.exceptions.FieldEditorException;
-import com.ontraport.sdk.http.FieldEditorResponse;
+import com.ontraport.sdk.http.FieldResponse;
 import com.ontraport.sdk.http.RequestParams;
+import com.ontraport.sdk.http.SectionResponse;
 import com.ontraport.sdk.models.Requestable;
 
 import java.util.ArrayList;
@@ -72,13 +73,12 @@ public class ObjectSection implements Requestable {
         throw new FieldEditorException("Could not find an existing field:" + field.toString() + "in this Section.");
     }
 
-    public static ObjectSection createFromResponse(FieldEditorResponse response) {
-        FieldEditorResponse.Data data = response.getData();
-        List<FieldEditorResponse.Field>[] columns = data.getFields();
-        ObjectSection section = new ObjectSection(data.getName(), data.getDescription());
+    public static ObjectSection createFromResponse(SectionResponse.Section response) {
+        List<FieldResponse.Field>[] columns = response.getFields();
+        ObjectSection section = new ObjectSection(response.getName(), response.getDescription());
 
         for (int i = 0; i < columns.length && i < 3; i++) {
-            for (FieldEditorResponse.Field field : columns[i]) {
+            for (FieldResponse.Field field : columns[i]) {
                 section.putFieldInColumn(i, ObjectField.createFromResponse(field));
             }
         }
