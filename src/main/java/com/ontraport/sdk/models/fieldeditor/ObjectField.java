@@ -17,6 +17,7 @@ public class ObjectField implements Requestable {
     private boolean _required;
     private boolean _unique;
     private DropOption _drop_options;
+    private String _options;
 
     public ObjectField(String alias, FieldType type) {
         this(alias, type, false, false);
@@ -60,6 +61,14 @@ public class ObjectField implements Requestable {
 
     public void setField(String field) {
         _field = field;
+    }
+
+    public void setOptions(String options) {
+        _options = options;
+    }
+
+    public String getOptions() {
+        return _options;
     }
 
     public void addDropOptions(Map<String, String> options) {

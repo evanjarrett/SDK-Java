@@ -55,6 +55,21 @@ public class ObjectSection implements Requestable {
         return null;
     }
 
+    public ObjectField getField(String field) {
+        for (Column column : _columns) {
+            for (ObjectField object_field : column) {
+                if (object_field.getField().equalsIgnoreCase(field)) {
+                    return object_field;
+                }
+            }
+        }
+        return null;
+    }
+
+    public Column getColumn(int index) {
+        return _columns[index];
+    }
+
     public void putFieldInColumn(int index, ObjectField field) {
         _columns[index].add(field);
     }
