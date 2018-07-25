@@ -5,6 +5,7 @@ import java.util.Map;
 
 public enum FieldType {
 
+    ADDRESS("address"),
     CHECK("check"),
     COUNTRY("country"),
     FULLDATE("fulldate"),
@@ -20,8 +21,7 @@ public enum FieldType {
     SMS("sms"),
     MERGEFIELD("mergefield"),
     PARENT("parent"),
-    URL("url"),
-    ADDRESS("address");
+    URL("url");
 
     private final String _type;
     private static Map<String, FieldType> _map = new HashMap<>();

@@ -63,6 +63,10 @@ public class ObjectField implements Requestable {
         _field = field;
     }
 
+    public FieldType getType() {
+        return _type;
+    }
+
     public void setOptions(String options) {
         _options = options;
     }
