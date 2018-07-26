@@ -17,6 +17,7 @@ public enum FieldType {
     STATE("state"),
     DROP("drop"),
     TEXT("text"),
+    TIMESTAMP("timestamp"),
     EMAIL("email"),
     SMS("sms"),
     MERGEFIELD("mergefield"),
