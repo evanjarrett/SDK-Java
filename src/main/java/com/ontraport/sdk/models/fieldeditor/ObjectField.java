@@ -91,7 +91,7 @@ public class ObjectField implements Requestable {
     public RequestParams toRequestParams() {
         RequestParams params = new RequestParams();
         params.put("alias", getAlias());
-        params.put("type", _type.getType());
+        params.put("type", _type != null ? _type.getType() : "");
         params.put("required", _required);
         params.put("unique", _unique);
         if (_drop_options != null) {
