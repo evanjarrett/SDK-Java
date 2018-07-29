@@ -16,6 +16,8 @@ public class ObjectField implements Requestable {
     private FieldType _type;
     private boolean _required;
     private boolean _unique;
+    private boolean _editable;
+    private boolean _deletable;
     private DropOption _drop_options;
     private String _options;
 
@@ -34,6 +36,8 @@ public class ObjectField implements Requestable {
         String str_type = field.getType();
         FieldType type = FieldType.typeOf(str_type);
         ObjectField object_field = new ObjectField(field.getAlias(), type, field.isRequired(), field.isUnique());
+        object_field.setDeletable(field.isDeletable());
+        object_field.setEditable(field.isEditable());
         object_field.setId(field.getId());
         object_field.setField(field.getField());
         return object_field;
@@ -65,6 +69,30 @@ public class ObjectField implements Requestable {
 
     public FieldType getType() {
         return _type;
+    }
+
+    public boolean isRequired() {
+        return _required;
+    }
+
+    public boolean isUnique() {
+        return _unique;
+    }
+
+    private void setEditable(boolean e) {
+        _editable = e;
+    }
+
+    public boolean isEditable() {
+        return _editable;
+    }
+
+    private void setDeletable(boolean d) {
+        _deletable = d;
+    }
+
+    public boolean isDeletable() {
+        return _deletable;
     }
 
     public void setOptions(String options) {

@@ -31,11 +31,19 @@ public class FieldResponse extends AbstractResponse {
         }
 
         public boolean isRequired() {
-            return required.equals("1");
+            return required.equals(1);
         }
 
         public boolean isUnique() {
-            return unique.equals("1");
+            return unique.equals(1);
+        }
+
+        public boolean isEditable() {
+            return editable.equals(1);
+        }
+
+        public boolean isDeletable() {
+            return deletable.equals(1);
         }
     }
 
