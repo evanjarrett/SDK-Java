@@ -12,6 +12,7 @@ import java.util.List;
 
 public class ObjectSection implements Requestable {
 
+    private int _id;
     private String _name;
     private String _description;
     private Column[] _columns = {new Column(), new Column(), new Column()};
@@ -30,6 +31,14 @@ public class ObjectSection implements Requestable {
         for (int i = 0; i < fields.length && i < 3; i++) {
             _columns[i] = fields[i];
         }
+    }
+
+    public int getId() {
+        return _id;
+    }
+
+    private void setId(int id) {
+        _id = id;
     }
 
     public String getName() {
@@ -99,7 +108,7 @@ public class ObjectSection implements Requestable {
     public static ObjectSection createFromResponse(SectionResponse.Section response) {
         List<FieldResponse.Field>[] columns = response.getFields();
         ObjectSection section = new ObjectSection(response.getName(), response.getDescription());
-
+        section.setId(response.getId());
         for (int i = 0; i < columns.length && i < 3; i++) {
             for (FieldResponse.Field field : columns[i]) {
                 section.putFieldInColumn(i, ObjectField.createFromResponse(field));
