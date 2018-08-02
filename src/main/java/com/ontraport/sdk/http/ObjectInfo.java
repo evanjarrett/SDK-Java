@@ -16,7 +16,8 @@ public class ObjectInfo extends AbstractResponse {
 
         public FieldSettings[] getListFieldSettings() {
             Integer i = 0;
-            FieldSettings[] fieldSettings = new FieldSettings[listFieldSettings.size()-1];
+            int field_setting_size = listFieldSettings.size() - 1 > 0 ? listFieldSettings.size() - 1 : 0;
+            FieldSettings[] fieldSettings = new FieldSettings[field_setting_size];
             while (listFieldSettings.containsKey(i.toString())) {
                 Map<String, String> setting = (Map<String, String>) listFieldSettings.get(i.toString());
                 fieldSettings[i] = new FieldSettings(setting.get("name"), setting.get("width"), setting.get("sortDir"));
