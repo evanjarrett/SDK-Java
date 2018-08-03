@@ -1,5 +1,7 @@
 package com.ontraport.sdk.http;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class ObjectInfo extends AbstractResponse {
@@ -7,27 +9,45 @@ public class ObjectInfo extends AbstractResponse {
 
     public class Data implements AbstractResponse.Data {
         String[] listFields;
-        Map<String, Object> listFieldSettings;
+        Object listFieldSettings;
         String count;
+        String viewMode = "0";
 
         public String[] getListFields() {
             return listFields;
         }
 
-        public FieldSettings[] getListFieldSettings() {
-            Integer i = 0;
-            int field_setting_size = listFieldSettings.size() - 1 > 0 ? listFieldSettings.size() - 1 : 0;
-            FieldSettings[] fieldSettings = new FieldSettings[field_setting_size];
-            while (listFieldSettings.containsKey(i.toString())) {
-                Map<String, String> setting = (Map<String, String>) listFieldSettings.get(i.toString());
-                fieldSettings[i] = new FieldSettings(setting.get("name"), setting.get("width"), setting.get("sortDir"));
-                i++;
+        public List<FieldSettings> getListFieldSettings() {
+            List<FieldSettings> fieldSettings = new ArrayList<>();
+
+            if (listFieldSettings instanceof Map) {
+                Integer i = 0;
+                Map<String, Object> settings = (Map<String, Object>) listFieldSettings;
+                if (settings.containsKey("viewMode")) {
+                    viewMode = (String) settings.get("viewMode");
+                }
+                while (settings.containsKey(i.toString())) {
+                    Map<String, String> setting = (Map<String, String>) settings.get(i.toString());
+                    fieldSettings.add(new FieldSettings(setting.get("name"), setting.get("width"), setting.get("sortDir")));
+                    i++;
+                }
+                return fieldSettings;
             }
-            return fieldSettings;
+            else if (listFieldSettings instanceof List) {
+                List<Object> settings = (List<Object>) listFieldSettings;
+                for (Object obj : settings) {
+                    if (obj instanceof Map) {
+                        Map<String, String> setting = (Map<String, String>) obj;
+                        fieldSettings.add(new FieldSettings(setting.get("name"), setting.get("width"), setting.get("sortDir")));
+                    }
+                }
+                return fieldSettings;
+            }
+            return null;
         }
 
         public String getViewMode() {
-            return (String) listFieldSettings.get("viewMode");
+            return viewMode;
         }
     }
 

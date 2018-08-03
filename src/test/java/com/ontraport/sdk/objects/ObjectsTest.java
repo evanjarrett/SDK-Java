@@ -12,6 +12,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
@@ -43,7 +44,7 @@ public class ObjectsTest {
         map.put("objectID", "0");
 
         ObjectInfo res = obj.retrieveCollectionInfo(map);
-        ObjectInfo.FieldSettings[] settings = res.getData().getListFieldSettings();
+        List<ObjectInfo.FieldSettings> settings = res.getData().getListFieldSettings();
         System.out.println(res);
     }
 
