@@ -11,7 +11,6 @@ public class ObjectInfo extends AbstractResponse {
         String[] listFields;
         Object listFieldSettings;
         String count;
-        String viewMode = "0";
 
         public String[] getListFields() {
             return listFields;
@@ -23,9 +22,6 @@ public class ObjectInfo extends AbstractResponse {
             if (listFieldSettings instanceof Map) {
                 Integer i = 0;
                 Map<String, Object> settings = (Map<String, Object>) listFieldSettings;
-                if (settings.containsKey("viewMode")) {
-                    viewMode = (String) settings.get("viewMode");
-                }
                 while (settings.containsKey(i.toString())) {
                     Map<String, String> setting = (Map<String, String>) settings.get(i.toString());
                     fieldSettings.add(new FieldSettings(setting.get("name"), setting.get("width"), setting.get("sortDir")));
@@ -47,7 +43,7 @@ public class ObjectInfo extends AbstractResponse {
         }
 
         public String getViewMode() {
-            return viewMode;
+            return "0";
         }
     }
 

@@ -30,7 +30,7 @@ public class CustomObjectsTest {
     @Test
     public void testRetrieveCollectionInfo() throws RequiredParamsException {
         Gson gson = new Gson();
-        ObjectInfo info = gson.fromJson("{\"code\":0,\"data\":{\"listFields\":[\"\",\"f1509\",\"id\",\"f1500\",\"ip_addy\",\"owner\",\"f1582\"],\"listFieldSettings\":{\"0\":{\"name\":\"\",\"width\":\"30\",\"sortDir\":\"\"},\"viewMode\":\"1\"},\"cardViewSettings\":{\"columnDisplayField\":\"\",\"sortField\":\"\",\"sortDir\":\"asc\",\"colorField\":\"\",\"colorFilter\":[],\"fields\":[\"f1509\",\"id\",\"f1500\",\"ip_addy\",\"owner\",\"f1582\"],\"displaySize\":\"mini\",\"newSettings\":true},\"viewMode\":1,\"count\":\"1\"},\"account_id\":\"22634\"}", ObjectInfo.class);
+        ObjectInfo info = gson.fromJson("{\"code\":0,\"data\":{\"listFields\":[\"\",\"f1509\",\"id\",\"f1500\",\"ip_addy\",\"owner\",\"f1582\"],\"listFieldSettings\":[],\"cardViewSettings\":{\"columnDisplayField\":\"\",\"sortField\":\"\",\"sortDir\":\"asc\",\"colorField\":\"\",\"colorFilter\":[],\"fields\":[\"f1509\",\"id\",\"f1500\",\"ip_addy\",\"owner\",\"f1582\"],\"displaySize\":\"mini\",\"newSettings\":true},\"viewMode\":[],\"count\":\"1\"},\"account_id\":\"22634\"}", ObjectInfo.class);
 info.getData().getListFieldSettings();
         CustomObjects obj = ontraport.custom(10000);
         RequestParams map = new RequestParams();
