@@ -1,4 +1,4 @@
 package com.ontraport.sdk.models.rules;
 
-public class Conditions {
+public class Event {
 }
