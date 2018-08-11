@@ -9,7 +9,6 @@ public class RuleBuilder { //implements Requestable {
     private String _conditions;
     private String _actions;
 
-
     public static String DAYS = "0";
     public static String WEEKS = "1";
     public static String MONTHS = "2";
@@ -71,25 +70,27 @@ public class RuleBuilder { //implements Requestable {
     public static String HUNDRED_TWENTY_DAYS_FROM_NOW = "120DFNOW";
     public static String HUNDRED_EIGHTY_DAYS_FROM_NOW = "180DFNOW";
 
+    public RuleBuilder(String name, String object_type_id, String id) {
+        _name = _name;
+        _object_type_id = object_type_id;
+        _id = id;
+    }
 
+    public void addEvent(String event, String[] params) {
 
+    }
 
+    public void addAction(String action, String[] params) {
+
+    }
+
+    public void addCondition(String condition, String[] params, String operator) {
+
+    }
 }
 
 
 /*
-    protected static $_requiredParams = array(
-        "events",
-        "actions",
-        "object_type_id"
-    );
-
-    public void __construct($name, $object_type_id, $id = NULL)
-    {
-        $this->_name = $name;
-        $this->_object_type_id = $object_type_id;
-        $this->_id = $id;
-    }
 
     public void addEvent($event, $eventParams)
     {
