@@ -11,7 +11,8 @@ public enum CreditCardType {
     MASTERCARD(2, "Mastercard"),
     AMERICAN_EXPRESS(3, "American Express"),
     DISCOVER(4, "Discover"),
-    PAYPAL(5, "Paypal");
+    PAYPAL(5, "Paypal"),
+    OTHER(6, "Other");
 
     private final int _value;
     private final String _name;
