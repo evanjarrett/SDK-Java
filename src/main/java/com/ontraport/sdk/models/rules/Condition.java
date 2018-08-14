@@ -61,7 +61,7 @@ public enum Condition {
     }
 
     public static String[] GetRequiredParams(Condition condition) {
-      Map<Condition, String[]> requiredParams = new HashMap<>();
+        Map<Condition, String[]> requiredParams = new HashMap<>();
         // Conditions
         requiredParams.put(SUBSCRIBED_TO_CAMPAIGN_BEFORE_AFTER_DATE, new String[]{"campaign_id", "conditional", "date"});
         requiredParams.put(BEEN_ON_CAMPAIGN_FOR_TIMEFRAME, new String[]{"campaign_id", "number_units"});
@@ -99,19 +99,19 @@ public enum Condition {
 
     public static boolean isCheckRestricted(Condition condition) {
         switch (condition) {
-          // conditions
-          case SPENT_N_AMOUNT_ON_PRODUCT:
-          case ORDERED_N_AMOUNT_OF_PRODUCT:
-          case SUBSCRIBED_TO_PRODUCT:
-          case SUBSCRIBED_TO_PRODUCT_FOR_TIMEFRAME:
-          // Sites/Pages
-          case VISITED_WP_PAGE_N_TIMES:
-          case VISITED_LANDING_PAGE_N_TIMES:
-          case HAS_ACCESS_TO_WPMEMBERSHIPLVL:
-          case NO_ACCESS_TO_WPMEMBERSHIPLVL:
-            return true;
-          default:
-            return false;
+            // conditions
+            case SPENT_N_AMOUNT_ON_PRODUCT:
+            case ORDERED_N_AMOUNT_OF_PRODUCT:
+            case SUBSCRIBED_TO_PRODUCT:
+            case SUBSCRIBED_TO_PRODUCT_FOR_TIMEFRAME:
+                // Sites/Pages
+            case VISITED_WP_PAGE_N_TIMES:
+            case VISITED_LANDING_PAGE_N_TIMES:
+            case HAS_ACCESS_TO_WPMEMBERSHIPLVL:
+            case NO_ACCESS_TO_WPMEMBERSHIPLVL:
+                return true;
+            default:
+                return false;
         }
     }
 }
