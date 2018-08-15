@@ -1,6 +1,9 @@
 package com.ontraport.sdk.models.rules;
 
-public class RuleBuilder { //implements Requestable {
+import com.ontraport.sdk.http.RequestParams;
+import com.ontraport.sdk.models.Requestable;
+
+public class RuleBuilder implements Requestable {
 
     private String _object_type_id;
     private String _name;
@@ -71,7 +74,7 @@ public class RuleBuilder { //implements Requestable {
     public static String HUNDRED_EIGHTY_DAYS_FROM_NOW = "180DFNOW";
 
     public RuleBuilder(String name, String object_type_id, String id) {
-        _name = _name;
+        _name = name;
         _object_type_id = object_type_id;
         _id = id;
     }
@@ -86,6 +89,43 @@ public class RuleBuilder { //implements Requestable {
 
     public void addCondition(String condition, String[] params, String operator) {
 
+    }
+
+    @Override
+    public RequestParams toRequestParams() {
+        /*
+        if (empty($this->_events) || empty($this->_actions))
+        {
+            throw new Exceptions\OntraportAPIException("Events and Actions must be added to create rule.");
+        }
+
+        $events = implode(";", $this->_events);
+        $actions = implode(";", $this->_actions);
+
+        if (!empty($this->_conditions))
+        {
+            $conditions = implode($this->_conditions);
+            $conditions = trim($conditions, ";");
+            $conditions = trim($conditions, "|");
+        }
+        else if (empty($this->_conditions))
+        {
+            $conditions = "";
+        }
+        $requestParams = array(
+            "object_type_id" => $this->_object_type_id,
+            "name" => $this->_name,
+            "events" =>  $events,
+            "conditions" => $conditions,
+            "actions" => $actions
+        );
+        if (!empty($this->_id))
+        {
+            $requestParams["id"] = $this->_id;
+        }
+        return $requestParams;
+         */
+        return null;
     }
 }
 
@@ -302,40 +342,6 @@ public class RuleBuilder { //implements Requestable {
             }
         }
         return $builder;
-    }
-
-    public void toRequestParams()
-    {
-        if (empty($this->_events) || empty($this->_actions))
-        {
-            throw new Exceptions\OntraportAPIException("Events and Actions must be added to create rule.");
-        }
-
-        $events = implode(";", $this->_events);
-        $actions = implode(";", $this->_actions);
-
-        if (!empty($this->_conditions))
-        {
-            $conditions = implode($this->_conditions);
-            $conditions = trim($conditions, ";");
-            $conditions = trim($conditions, "|");
-        }
-        else if (empty($this->_conditions))
-        {
-            $conditions = "";
-        }
-        $requestParams = array(
-            "object_type_id" => $this->_object_type_id,
-            "name" => $this->_name,
-            "events" =>  $events,
-            "conditions" => $conditions,
-            "actions" => $actions
-        );
-        if (!empty($this->_id))
-        {
-            $requestParams["id"] = $this->_id;
-        }
-        return $requestParams;
     }
 
     public void validateRule($type, $rule)
