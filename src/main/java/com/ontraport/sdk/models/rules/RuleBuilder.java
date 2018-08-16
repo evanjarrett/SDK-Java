@@ -79,18 +79,6 @@ public class RuleBuilder implements Requestable {
         _id = id;
     }
 
-    public void addEvent(String event, String[] params) {
-
-    }
-
-    public void addAction(String action, String[] params) {
-
-    }
-
-    public void addCondition(String condition, String[] params, String operator) {
-
-    }
-
     @Override
     public RequestParams toRequestParams() {
         /*
@@ -127,6 +115,38 @@ public class RuleBuilder implements Requestable {
          */
         return null;
     }
+
+    public void addEvent(String event, String[] params) {
+
+    }
+
+    public void addAction(String action, String[] params) {
+
+    }
+
+    public void addCondition(String condition, String[] params, String operator) {
+
+    }
+
+/*    public void validateRule(RuleType type, $rule)
+    {
+        Event.ACCESS_TO_WPMEMBERSHIPLVL_GIVEN.GetRequiredParams()
+        String[] requiredParams = type.GetRequiredParams();
+
+        $requiredParams = call_user_func(__NAMESPACE__ . "\\" . $type . "::GetRequiredParams", $rule);
+        // check if rule is valid
+        if ($requiredParams == null && !is_array($requiredParams))
+        {
+            throw new Exceptions\OntraportAPIException($rule . " is not a valid rule type.");
+        }
+        // validate rule is used for correct object
+        if (call_user_func(__NAMESPACE__ . "\\" . $type . "::CheckRestricted", $rule) && ($this->_object_type_id != 0))
+        {
+            throw new Exceptions\OntraportAPIException($rule . " can only be used with Contacts object.");
+        }
+        return true;
+    }*/
+
 }
 
 
@@ -344,21 +364,7 @@ public class RuleBuilder implements Requestable {
         return $builder;
     }
 
-    public void validateRule($type, $rule)
-    {
-        $requiredParams = call_user_func(__NAMESPACE__ . "\\" . $type . "::GetRequiredParams", $rule);
-        // check if rule is valid
-        if ($requiredParams == null && !is_array($requiredParams))
-        {
-            throw new Exceptions\OntraportAPIException($rule . " is not a valid rule type.");
-        }
-        // validate rule is used for correct object
-        if (call_user_func(__NAMESPACE__ . "\\" . $type . "::CheckRestricted", $rule) && ($this->_object_type_id != 0))
-        {
-            throw new Exceptions\OntraportAPIException($rule . " can only be used with Contacts object.");
-        }
-        return true;
-    }
+
     private void _checkParams($requiredParams, $requestParams, $exception = false)
     {
         // exceptions for parameter length for ping url
