@@ -62,14 +62,22 @@ public enum Event implements RuleType {
         return _map.get(event);
     }
 
+    @Override
     public String getRule() {
         return _rule;
     }
 
+    @Override
+    public String getFormattedRule(String value) {
+        return getRule() + "(" + value + ")";
+    }
+
+    @Override
     public String[] getRequiredParams() {
         return _requiredParams;
     }
 
+    @Override
     public boolean isRestricted() {
         switch (this) {
             // events

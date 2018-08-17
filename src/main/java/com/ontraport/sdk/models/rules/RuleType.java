@@ -4,6 +4,8 @@ public interface RuleType {
 
     String getRule();
 
+    String getFormattedRule(String value);
+
     String[] getRequiredParams();
 
     boolean isRestricted();

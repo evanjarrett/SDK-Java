@@ -1,16 +1,21 @@
 package com.ontraport.sdk.models.rules;
 
+import com.ontraport.sdk.exceptions.OntraportAPIRuntimeException;
 import com.ontraport.sdk.http.RequestParams;
 import com.ontraport.sdk.models.Requestable;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
 public class RuleBuilder implements Requestable {
 
-    private String _object_type_id;
+    private int _object_type_id;
     private String _name;
     private String _id;
-    private String _events;
-    private String _conditions;
-    private String _actions;
+    private Map<Event, String> _events = new HashMap<>();
+    private Map<Condition, String> _conditions = new HashMap<>();
+    private Map<Action, String> _actions = new HashMap<>();
 
     public static String DAYS = "0";
     public static String WEEKS = "1";
@@ -73,7 +78,7 @@ public class RuleBuilder implements Requestable {
     public static String HUNDRED_TWENTY_DAYS_FROM_NOW = "120DFNOW";
     public static String HUNDRED_EIGHTY_DAYS_FROM_NOW = "180DFNOW";
 
-    public RuleBuilder(String name, String object_type_id, String id) {
+    public RuleBuilder(String name, int object_type_id, String id) {
         _name = name;
         _object_type_id = object_type_id;
         _id = id;
@@ -116,61 +121,58 @@ public class RuleBuilder implements Requestable {
         return null;
     }
 
-    public void addEvent(String event, String[] params) {
-
+    public RuleBuilder addEvent(Event event, String[] params) {
+        return add(event, _events, params);
     }
 
-    public void addAction(String action, String[] params) {
-
+    public RuleBuilder addAction(Action action, String[] params) {
+        return add(action, _actions, params);
     }
 
-    public void addCondition(String condition, String[] params, String operator) {
-
+    public RuleBuilder addCondition(Condition condition, String[] params, String operator) {
+        return this;
     }
 
-/*    public void validateRule(RuleType type, $rule)
-    {
-        Event.ACCESS_TO_WPMEMBERSHIPLVL_GIVEN.GetRequiredParams()
-        String[] requiredParams = type.GetRequiredParams();
-
-        $requiredParams = call_user_func(__NAMESPACE__ . "\\" . $type . "::GetRequiredParams", $rule);
-        // check if rule is valid
-        if ($requiredParams == null && !is_array($requiredParams))
+    public <T extends RuleType> RuleBuilder add(T type, Map<T,String> map, String[] params) {
+        if (validateRule(type) && _checkParams(type.getRequiredParams(), params))
         {
-            throw new Exceptions\OntraportAPIException($rule . " is not a valid rule type.");
+            if (type instanceof Action && type == Action.PING_URL)
+            {
+                String value = _formatParams(params, "::");
+            }
+
+            String value = _formatParams(params);
+            map.put(type, value);
         }
-        // validate rule is used for correct object
-        if (call_user_func(__NAMESPACE__ . "\\" . $type . "::CheckRestricted", $rule) && ($this->_object_type_id != 0))
-        {
-            throw new Exceptions\OntraportAPIException($rule . " can only be used with Contacts object.");
+        return this;
+    }
+
+    public boolean validateRule(RuleType type)
+    {
+        if (type.isRestricted() && _object_type_id != 0) {
+            throw new OntraportAPIRuntimeException(type.getRule() + " can only be used with Contacts object.");
         }
         return true;
-    }*/
+    }
+
+    private boolean _checkParams(String[] requiredParams, String[] params) {
+        return true;
+    }
+
+    private String _formatParams(String[] params) {
+        return _formatParams(params, ",");
+    }
+
+    private String _formatParams(String[] params, String delimiter)
+    {
+        return Arrays.toString(params).replace(", ", delimiter).replaceAll("[\\[\\]]", "");
+    }
+
 
 }
 
 
 /*
-
-    public void addEvent($event, $eventParams)
-    {
-        // check if valid rule usage for object_type_id
-        $this->validateRule("Events", $event);
-        // get required parameters for specific rule
-        $requiredParams = Events::GetRequiredParams($event);
-        // checking for missing and invalid types for each parameter
-        $check_params = $this->_checkParams($requiredParams, $eventParams);
-        // if no missing or invalid rule parameters
-        if ($check_params)
-        {
-            $value = $this->_formatParams($eventParams);
-            $rule = $event . "(" . $value . ")";
-            $this->_events[] = $rule;
-
-            return $this->_events;
-        }
-        return false;
-    }
 
     public void addCondition($condition, $conditionParams, $operator = NULL)
     {
@@ -219,40 +221,6 @@ public class RuleBuilder implements Requestable {
         return false;
     }
 
-    public void addAction($action, $actionParams)
-    {
-        // check if valid rule usage for object_type_id
-        $this->validateRule("Actions", $action);
-        // get required parameters for specific rule
-        $requiredParams = Actions::GetRequiredParams($action);
-        // checking for missing and invalid parameters
-        $exception = false;
-        if ($action == Actions::PING_URL)
-        {
-            $exception = true;
-        }
-        $check_params = $this->_checkParams($requiredParams, $actionParams, $exception);
-        // if no missing or invalid rule parameters
-        if ($check_params)
-        {
-            $rule = $action;
-            // special formatting for ping_url
-            if ($action == Actions::PING_URL)
-            {
-                $formatted = $this->_formatParams($actionParams, "::");
-                $this->_actions[] = $action . "(" . $formatted . ")";
-
-                return $this->_actions;
-            }
-            // general formatting for actions
-            $value = $this->_formatParams($actionParams);
-            $formatted = "(" . $value . ")";
-            $this->_actions[] = $rule . $formatted;
-
-            return $this->_actions;
-        }
-        return false;
-    }
 
     public void clearEvents()
     {
@@ -432,16 +400,6 @@ public class RuleBuilder implements Requestable {
         return true;
     }
 
-    private void _formatParams($requestParams, $delimiter = ",")
-    {
-        $formatted = "";
-        foreach($requestParams as $param)
-        {
-            $formatted = $formatted . $param . $delimiter;
-        }
-        $formatted = rtrim($formatted, $delimiter);
-        return $formatted;
-    }
 
     private void _parseParams($rule)
     {

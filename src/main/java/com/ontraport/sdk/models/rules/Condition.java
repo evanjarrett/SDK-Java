@@ -57,14 +57,22 @@ public enum Condition implements RuleType {
         return _map.get(condition);
     }
 
+    @Override
     public String getRule() {
         return _rule;
     }
 
+    @Override
+    public String getFormattedRule(String value) {
+        return getRule() + "(" + value + ")";
+    }
+
+    @Override
     public String[] getRequiredParams() {
         return _requiredParams;
     }
 
+    @Override
     public boolean isRestricted() {
         switch (this) {
             // conditions
