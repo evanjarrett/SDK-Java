@@ -87,36 +87,36 @@ public class RuleBuilder implements Requestable {
     @Override
     public RequestParams toRequestParams() {
         /*
-        if (empty($this->_events) || empty($this->_actions))
+        if (empty(_events) || empty(_actions))
         {
-            throw new Exceptions\OntraportAPIException("Events and Actions must be added to create rule.");
+            throw new OntraportAPIException("Events and Actions must be added to create rule.");
         }
 
-        $events = implode(";", $this->_events);
-        $actions = implode(";", $this->_actions);
+        Event[] events = implode(";", _events);
+        Action[] actions = implode(";", _actions);
 
-        if (!empty($this->_conditions))
+        if (!empty(_conditions))
         {
-            $conditions = implode($this->_conditions);
-            $conditions = trim($conditions, ";");
-            $conditions = trim($conditions, "|");
+            conditions = implode(_conditions);
+            conditions = trim(conditions, ";");
+            conditions = trim(conditions, "|");
         }
-        else if (empty($this->_conditions))
+        else if (empty(_conditions))
         {
-            $conditions = "";
+            conditions = "";
         }
-        $requestParams = array(
-            "object_type_id" => $this->_object_type_id,
-            "name" => $this->_name,
-            "events" =>  $events,
-            "conditions" => $conditions,
-            "actions" => $actions
+        requestParams = array(
+            "object_type_id" => _object_type_id,
+            "name" => _name,
+            "events" =>  events,
+            "conditions" => conditions,
+            "actions" => actions
         );
-        if (!empty($this->_id))
+        if (!empty(_id))
         {
-            $requestParams["id"] = $this->_id;
+            requestParams["id"] = _id;
         }
-        return $requestParams;
+        return requestParams;
          */
         return null;
     }
