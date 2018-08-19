@@ -224,23 +224,24 @@ public class RuleBuilder implements Requestable {
 
     public void clearEvents()
     {
-        $this->_events = array();
-        return $this->_events;
+        _events = array();
+
+
     }
 
     public void clearConditions()
     {
-        $this->_conditions = array();
-        return $this->_conditions;
+        _conditions = array();
+
     }
 
     public void clearActions()
     {
-        $this->_actions = array();
-        return $this->_actions;
+        _actions = array();
+
     }
 
-    public void removeEventByName($event_name)
+    public void removeEventByName(String event_name)
     {
         foreach($this->_events as $key => $event)
         {
@@ -251,7 +252,7 @@ public class RuleBuilder implements Requestable {
         }
         return $this->_events;
     }
-     public void removeConditionByName($condition_name)
+     public void removeConditionByName(String condition_name)
      {
          foreach($this->_conditions as $key => $condition)
          {
@@ -263,7 +264,7 @@ public class RuleBuilder implements Requestable {
          return $this->_conditions;
      }
 
-    public void removeActionByName($action_name)
+    public void removeActionByName(String action_name)
     {
         foreach($this->_actions as $key => $action)
         {
