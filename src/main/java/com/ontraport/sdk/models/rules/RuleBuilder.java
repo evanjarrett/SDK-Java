@@ -4,18 +4,18 @@ import com.ontraport.sdk.exceptions.OntraportAPIRuntimeException;
 import com.ontraport.sdk.http.RequestParams;
 import com.ontraport.sdk.models.Requestable;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 public class RuleBuilder implements Requestable {
 
     private int _object_type_id;
     private String _name;
     private String _id;
-    private Map<Event, String> _events = new HashMap<>();
-    private Map<Condition, String> _conditions = new HashMap<>();
-    private Map<Action, String> _actions = new HashMap<>();
+    private List<RulePart<Event>> _events = new ArrayList<>();
+    private List<RulePart<Condition>> _conditions = new ArrayList<>();
+    private List<RulePart<Action>> _actions = new ArrayList<>();
 
     public static String DAYS = "0";
     public static String WEEKS = "1";
@@ -122,29 +122,48 @@ public class RuleBuilder implements Requestable {
     }
 
     public RuleBuilder addEvent(Event event, String[] params) {
-        return add(event, _events, params);
+        return add(event, _events, params, null);
     }
 
     public RuleBuilder addAction(Action action, String[] params) {
-        return add(action, _actions, params);
+        return add(action, _actions, params, null);
     }
 
-    public RuleBuilder addCondition(Condition condition, String[] params, String operator) {
-        return this;
+    public RuleBuilder addCondition(Condition condition, String[] params, Operator operator) {
+        // determine operator
+        if (!_conditions.isEmpty() && operator == null) {
+            throw new OntraportAPIRuntimeException("Invalid operator. Must be AND or OR.");
+        }
+        return add(condition, _conditions, params, operator);
     }
 
-    public <T extends RuleType> RuleBuilder add(T type, Map<T,String> map, String[] params) {
+    public <T extends RuleType> RuleBuilder add(T type, List<RulePart<T>> list, String[] params, Operator operator) {
         if (validateRule(type) && _checkParams(type.getRequiredParams(), params))
         {
+            String value = _formatParams(params);
             if (type instanceof Action && type == Action.PING_URL)
             {
-                String value = _formatParams(params, "::");
+                value = _formatParams(params, "::");
             }
-
-            String value = _formatParams(params);
-            map.put(type, value);
+            list.add(new RulePart<>(type, value, operator));
         }
+        list.clear();
         return this;
+    }
+
+    public void clearEvents()
+    {
+        _events.clear();
+    }
+
+    public void clearConditions()
+    {
+        _conditions.clear();
+    }
+
+    public void clearActions()
+    {
+        _actions.clear();
     }
 
     public boolean validateRule(RuleType type)
@@ -168,79 +187,25 @@ public class RuleBuilder implements Requestable {
         return Arrays.toString(params).replace(", ", delimiter).replaceAll("[\\[\\]]", "");
     }
 
+    private class RulePart<T extends RuleType> {
+        private T _type;
+        private String _value;
+        private Operator _operator;
 
+        RulePart(T type, String value) {
+            this(type, value, null);
+        }
+
+        RulePart(T type, String value, Operator operator) {
+            _type = type;
+            _value = value;
+            _operator = operator;
+        }
+    }
 }
 
 
 /*
-
-    public void addCondition($condition, $conditionParams, $operator = NULL)
-    {
-        // check if valid rule usage for object_type_id
-        $this->validateRule("Conditions", $condition);
-        // get required parameters for specific rule
-        $requiredParams = Conditions::GetRequiredParams($condition);
-        // checking for missing and invalid parameters
-        $check_params = $this->_checkParams($requiredParams, $conditionParams);
-
-        // determine operator
-        if (empty($this->_conditions))
-        {
-            $operator = NULL;
-        }
-        else if (!empty($this->_conditions))
-        {
-            if ($operator == "AND")
-            {
-                $operator = ";";
-            }
-            else if ($operator == "OR")
-            {
-                $operator = "|";
-            }
-            else if ($operator == NULL)
-            {
-                throw new Exceptions\RequiredParamsException(array("operator"));
-            }
-            else
-            {
-                throw new Exceptions\OntraportAPIException("Invalid operator. Must be AND or OR.");
-            }
-        }
-        $rule = $operator . $condition;
-
-        // if no missing or invalid rule parameters
-        if ($check_params)
-        {
-            $value = $this->_formatParams($conditionParams);
-            $formatted = "(" . $value . ")";
-            $this->_conditions[] = $rule . $formatted;
-
-            return $this->_conditions;
-        }
-        return false;
-    }
-
-
-    public void clearEvents()
-    {
-        _events = array();
-
-
-    }
-
-    public void clearConditions()
-    {
-        _conditions = array();
-
-    }
-
-    public void clearActions()
-    {
-        _actions = array();
-
-    }
-
     public void removeEventByName(String event_name)
     {
         foreach($this->_events as $key => $event)
