@@ -121,6 +121,64 @@ public class RuleBuilder implements Requestable {
         return null;
     }
 
+    public static void CreateFromResponse() {
+        /*
+        $name = $data["name"];
+        $object_type_id = $data["object_type_id"];
+        $id = $data["id"];
+
+        $builder = new RuleBuilder($name, $object_type_id, $id);
+
+        $events = self::_splitRule($data["events"]);
+        $conditions = array();
+        if ($data["conditions"] != null)
+        {
+            $conditions = self::_splitRule($data["conditions"]);
+        }
+        $actions = self::_splitRule($data["actions"]);
+
+        foreach($events as $event)
+        {
+            // separate rule and params
+            $parsed = self::_parseParams($event);
+            $builder->addEvent($parsed["name"], $parsed["params"]);
+        }
+        foreach($actions as $action)
+        {
+            // separate rule and params
+            $parsed = self::_parseParams($action);
+            $builder->addAction($parsed["name"], $parsed["params"]);
+        }
+        if (!empty($conditions))
+        {
+            foreach($conditions as $condition)
+            {
+                // determine operators
+                $operators = self::_operatorClassifier($data["conditions"]);
+                $or_rule = $operators["or_rules"];
+                $and_rule = $operators["and_rules"];
+                $end_rule = $operators["end_rule"];
+                // separate rule and param
+                $parsed = self::_parseParams($condition);
+
+                if (in_array($condition, $end_rule))
+                {
+                    $builder->addCondition($parsed["name"], $parsed["params"]);
+                }
+                else if (in_array($condition, $or_rule))
+                {
+                    $builder->addCondition($parsed["name"], $parsed["params"], "OR");
+                }
+                else if (in_array($condition, $and_rule))
+                {
+                    $builder->addCondition($parsed["name"], $parsed["params"], "AND");
+                }
+            }
+        }
+        return $builder;
+         */
+    }
+
     public RuleBuilder addEvent(Event event, String[] params) {
         return add(event, _events, params, null);
     }
@@ -175,132 +233,7 @@ public class RuleBuilder implements Requestable {
     }
 
     private boolean _checkParams(String[] requiredParams, String[] params) {
-        return true;
-    }
-
-    private String _formatParams(String[] params) {
-        return _formatParams(params, ",");
-    }
-
-    private String _formatParams(String[] params, String delimiter)
-    {
-        return Arrays.toString(params).replace(", ", delimiter).replaceAll("[\\[\\]]", "");
-    }
-
-    private class RulePart<T extends RuleType> {
-        private T _type;
-        private String _value;
-        private Operator _operator;
-
-        RulePart(T type, String value) {
-            this(type, value, null);
-        }
-
-        RulePart(T type, String value, Operator operator) {
-            _type = type;
-            _value = value;
-            _operator = operator;
-        }
-    }
-}
-
-
-/*
-    public void removeEventByName(String event_name)
-    {
-        foreach($this->_events as $key => $event)
-        {
-            if(strpos($event, $event_name) !== false)
-            {
-                array_splice($this->_events, $key, 1);
-            }
-        }
-        return $this->_events;
-    }
-     public void removeConditionByName(String condition_name)
-     {
-         foreach($this->_conditions as $key => $condition)
-         {
-             if(strpos($condition, $condition_name) !== false)
-             {
-                 array_splice($this->_conditions, $key, 1);
-             }
-         }
-         return $this->_conditions;
-     }
-
-    public void removeActionByName(String action_name)
-    {
-        foreach($this->_actions as $key => $action)
-        {
-            if(strpos($action, $action_name) !== false)
-            {
-                array_splice($this->_actions, $key, 1);
-            }
-        }
-        return $this->_actions;
-    }
-
-    public static void CreateFromResponse(array $data)
-    {
-        $name = $data["name"];
-        $object_type_id = $data["object_type_id"];
-        $id = $data["id"];
-
-        $builder = new RuleBuilder($name, $object_type_id, $id);
-
-        $events = self::_splitRule($data["events"]);
-        $conditions = array();
-        if ($data["conditions"] != null)
-        {
-            $conditions = self::_splitRule($data["conditions"]);
-        }
-        $actions = self::_splitRule($data["actions"]);
-
-        foreach($events as $event)
-        {
-            // separate rule and params
-            $parsed = self::_parseParams($event);
-            $builder->addEvent($parsed["name"], $parsed["params"]);
-        }
-        foreach($actions as $action)
-        {
-            // separate rule and params
-            $parsed = self::_parseParams($action);
-            $builder->addAction($parsed["name"], $parsed["params"]);
-        }
-        if (!empty($conditions))
-        {
-            foreach($conditions as $condition)
-            {
-                // determine operators
-                $operators = self::_operatorClassifier($data["conditions"]);
-                $or_rule = $operators["or_rules"];
-                $and_rule = $operators["and_rules"];
-                $end_rule = $operators["end_rule"];
-                // separate rule and param
-                $parsed = self::_parseParams($condition);
-
-                if (in_array($condition, $end_rule))
-                {
-                    $builder->addCondition($parsed["name"], $parsed["params"]);
-                }
-                else if (in_array($condition, $or_rule))
-                {
-                    $builder->addCondition($parsed["name"], $parsed["params"], "OR");
-                }
-                else if (in_array($condition, $and_rule))
-                {
-                    $builder->addCondition($parsed["name"], $parsed["params"], "AND");
-                }
-            }
-        }
-        return $builder;
-    }
-
-
-    private void _checkParams($requiredParams, $requestParams, $exception = false)
-    {
+        /*
         // exceptions for parameter length for ping url
         if ($exception == true)
         {
@@ -363,12 +296,21 @@ public class RuleBuilder implements Requestable {
             throw new Exceptions\OntraportAPIException("Invalid inputs for $invalid_params. " .
             "Refer to the API Doc to make sure your rule parameters are valid and in the correct order.");
         }
+         */
         return true;
     }
 
+    private String _formatParams(String[] params) {
+        return _formatParams(params, ",");
+    }
 
-    private void _parseParams($rule)
+    private String _formatParams(String[] params, String delimiter)
     {
+        return Arrays.toString(params).replace(", ", delimiter).replaceAll("[\\[\\]]", "");
+    }
+
+    private String _parseParams(String rule) {
+        /*
         $parsed = array();
 
         $split = explode("(", $rule);
@@ -385,11 +327,12 @@ public class RuleBuilder implements Requestable {
         }
         $parsed["params"] = $parsed_params;
         $parsed["name"] = $name;
-
-        return $parsed;
+         */
+        return null;
     }
-    private void _splitRule($init_rule)
-    {
+
+    private String[] _splitRule(String rule) {
+        /*
         $rules = array();
         $init_rule = str_replace("|", ";", $init_rule);
         $rules = explode(";", $init_rule);
@@ -397,11 +340,12 @@ public class RuleBuilder implements Requestable {
         {
             $rules[$key] = trim($rule);
         }
-        return $rules;
+         */
+        return new String[0];
     }
 
-    private void _operatorClassifier($init_conditions)
-    {
+    private Operator[] _operatorClassifier(String conditions) {
+        /*
         $or_rules = array();
         $and_rules = array();
         $end_rule = array();
@@ -437,8 +381,23 @@ public class RuleBuilder implements Requestable {
             "and_rules" => $and_rules,
             "end_rule" => $end_rule
         );
-        return $operators;
+         */
+        return new Operator[0];
+    }
+
+    private class RulePart<T extends RuleType> {
+        private T _type;
+        private String _value;
+        private Operator _operator;
+
+        RulePart(T type, String value) {
+            this(type, value, null);
+        }
+
+        RulePart(T type, String value, Operator operator) {
+            _type = type;
+            _value = value;
+            _operator = operator;
+        }
     }
 }
-
-*/
