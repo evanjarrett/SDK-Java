@@ -1,5 +1,6 @@
 package com.ontraport.sdk.models.rules;
 
+import com.ontraport.sdk.exceptions.OntraportAPIException;
 import com.ontraport.sdk.exceptions.OntraportAPIRuntimeException;
 import com.ontraport.sdk.http.RequestParams;
 import com.ontraport.sdk.models.Requestable;
@@ -233,70 +234,58 @@ public class RuleBuilder implements Requestable {
     }
 
     private boolean _checkParams(String[] requiredParams, String[] params) {
-        /*
-        // exceptions for parameter length for ping url
-        if ($exception == true)
+        if (params.length == 0 || requiredParams.length != params.length)
         {
-            if (count($requestParams) == 0)
-            {
-                throw new Exceptions\OntraportAPIException("Invalid number of parameters for rule. " .
-                "Refer to the API Doc to make sure you have the correct inputs.");
-                return false;
-            }
-        }
-        else if (count($requiredParams) != count($requestParams))
-        {
-            throw new Exceptions\OntraportAPIException("Invalid number of parameters for rule. " .
+            throw new OntraportAPIRuntimeException("Invalid number of parameters for rule. " +
             "Refer to the API Doc to make sure you have the correct inputs.");
-            return false;
         }
-        $invalid_params = array();
-        $units = array(self::DAYS, self::WEEKS, self::MONTHS);
-        $conditional = array(
-            self::EQUAL_TO,
-            self::NOT_EQUAL_TO,
-            self::GREATER_THAN,
-            self::LESS_THAN,
-            self::GREATER_OR_EQUAL_TO,
-            self::LESS_OR_EQUAL_TO,
-            self::CONTAINS,
-            self::DOES_NOT_CONTAIN,
-            self::STARTS_WITH,
-            self::ENDS_WITH,
-            self::ON,
-            self::BEFORE,
-            self::AFTER
+        List<String> invalid_params = new ArrayList<>();
+
+        List<String> units = Arrays.asList(DAYS, WEEKS, MONTHS);
+        List<String> conditional = Arrays.asList(
+            EQUAL_TO,
+            NOT_EQUAL_TO,
+            GREATER_THAN,
+            LESS_THAN,
+            GREATER_OR_EQUAL_TO,
+            LESS_OR_EQUAL_TO,
+            CONTAINS,
+            DOES_NOT_CONTAIN,
+            STARTS_WITH,
+            ENDS_WITH,
+            ON,
+            BEFORE,
+            AFTER
         );
 
-        $i = 0;
-        foreach($requiredParams as $param)
-        {
-            $value = $requestParams[$i];
-            if(($param == "conditional") && !in_array($value, $conditional))
+        for (int i = 0; i < requiredParams.length; i++) {
+            String param = requiredParams[i];
+            String value = params[i];
+
+            if(param.equals("conditional") && conditional.contains(value))
             {
-                $invalid_params[] = $param;
+                invalid_params.add(param);
             }
-            if(($param == "units") && !in_array($value, $units))
+            else if(param.equals("units") && !units.contains(value))
             {
-                $invalid_params[] = $param;
+                invalid_params.add(param);
             }
-            if(($param == "option") && (!is_numeric($value) || (($value < 0) || ($value > 3))))
+            else if(param.equals("option"))
             {
-                $invalid_params[] = $param;
+                invalid_params.add(param);
             }
-            if(($param == "outcome") && (!is_numeric($value) || (($value < 0) || ($value > 1))))
+            else if(param.equals("outcome"))
             {
-                $invalid_params[] = $param;
+                invalid_params.add(param);
             }
-            $i++;
+
         }
-        if (!empty($invalid_params))
+
+        if (invalid_params.isEmpty())
         {
-            $invalid_params = implode(", ", $invalid_params);
-            throw new Exceptions\OntraportAPIException("Invalid inputs for $invalid_params. " .
+            throw new OntraportAPIRuntimeException("Invalid inputs for " + invalid_params.toString() + ". " +
             "Refer to the API Doc to make sure your rule parameters are valid and in the correct order.");
         }
-         */
         return true;
     }
 
