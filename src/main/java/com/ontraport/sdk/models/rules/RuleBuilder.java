@@ -1,13 +1,14 @@
 package com.ontraport.sdk.models.rules;
 
-import com.ontraport.sdk.exceptions.OntraportAPIException;
 import com.ontraport.sdk.exceptions.OntraportAPIRuntimeException;
 import com.ontraport.sdk.http.RequestParams;
 import com.ontraport.sdk.models.Requestable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class RuleBuilder implements Requestable {
 
@@ -197,11 +198,9 @@ public class RuleBuilder implements Requestable {
     }
 
     public <T extends RuleType> RuleBuilder add(T type, List<RulePart<T>> list, String[] params, Operator operator) {
-        if (validateRule(type) && _checkParams(type.getRequiredParams(), params))
-        {
+        if (validateRule(type) && _checkParams(type.getRequiredParams(), params)) {
             String value = _formatParams(params);
-            if (type instanceof Action && type == Action.PING_URL)
-            {
+            if (type instanceof Action && type == Action.PING_URL) {
                 value = _formatParams(params, "::");
             }
             list.add(new RulePart<>(type, value, operator));
@@ -210,23 +209,19 @@ public class RuleBuilder implements Requestable {
         return this;
     }
 
-    public void clearEvents()
-    {
+    public void clearEvents() {
         _events.clear();
     }
 
-    public void clearConditions()
-    {
+    public void clearConditions() {
         _conditions.clear();
     }
 
-    public void clearActions()
-    {
+    public void clearActions() {
         _actions.clear();
     }
 
-    public boolean validateRule(RuleType type)
-    {
+    public boolean validateRule(RuleType type) {
         if (type.isRestricted() && _object_type_id != 0) {
             throw new OntraportAPIRuntimeException(type.getRule() + " can only be used with Contacts object.");
         }
@@ -234,57 +229,51 @@ public class RuleBuilder implements Requestable {
     }
 
     private boolean _checkParams(String[] requiredParams, String[] params) {
-        if (params.length == 0 || requiredParams.length != params.length)
-        {
+        if (params.length == 0 || requiredParams.length != params.length) {
             throw new OntraportAPIRuntimeException("Invalid number of parameters for rule. " +
-            "Refer to the API Doc to make sure you have the correct inputs.");
+                    "Refer to the API Doc to make sure you have the correct inputs.");
         }
         List<String> invalid_params = new ArrayList<>();
 
         List<String> units = Arrays.asList(DAYS, WEEKS, MONTHS);
         List<String> conditional = Arrays.asList(
-            EQUAL_TO,
-            NOT_EQUAL_TO,
-            GREATER_THAN,
-            LESS_THAN,
-            GREATER_OR_EQUAL_TO,
-            LESS_OR_EQUAL_TO,
-            CONTAINS,
-            DOES_NOT_CONTAIN,
-            STARTS_WITH,
-            ENDS_WITH,
-            ON,
-            BEFORE,
-            AFTER
+                EQUAL_TO,
+                NOT_EQUAL_TO,
+                GREATER_THAN,
+                LESS_THAN,
+                GREATER_OR_EQUAL_TO,
+                LESS_OR_EQUAL_TO,
+                CONTAINS,
+                DOES_NOT_CONTAIN,
+                STARTS_WITH,
+                ENDS_WITH,
+                ON,
+                BEFORE,
+                AFTER
         );
 
         for (int i = 0; i < requiredParams.length; i++) {
             String param = requiredParams[i];
             String value = params[i];
 
-            if(param.equals("conditional") && conditional.contains(value))
-            {
+            if (param.equals("conditional") && conditional.contains(value)) {
                 invalid_params.add(param);
             }
-            else if(param.equals("units") && !units.contains(value))
-            {
+            else if (param.equals("units") && !units.contains(value)) {
                 invalid_params.add(param);
             }
-            else if(param.equals("option"))
-            {
+            else if (param.equals("option")) {
                 invalid_params.add(param);
             }
-            else if(param.equals("outcome"))
-            {
+            else if (param.equals("outcome")) {
                 invalid_params.add(param);
             }
 
         }
 
-        if (invalid_params.isEmpty())
-        {
+        if (invalid_params.isEmpty()) {
             throw new OntraportAPIRuntimeException("Invalid inputs for " + invalid_params.toString() + ". " +
-            "Refer to the API Doc to make sure your rule parameters are valid and in the correct order.");
+                    "Refer to the API Doc to make sure your rule parameters are valid and in the correct order.");
         }
         return true;
     }
@@ -293,44 +282,27 @@ public class RuleBuilder implements Requestable {
         return _formatParams(params, ",");
     }
 
-    private String _formatParams(String[] params, String delimiter)
-    {
+    private String _formatParams(String[] params, String delimiter) {
         return Arrays.toString(params).replace(", ", delimiter).replaceAll("[\\[\\]]", "");
     }
 
-    private String _parseParams(String rule) {
-        /*
-        $parsed = array();
-
-        $split = explode("(", $rule);
-        $name = $split[0];
-        $str_params = rtrim($split[1], ")");
-        // if empty string
-        if ($str_params == '')
-        {
-            $parsed_params = array();
-        }
-        else
-        {
-            $parsed_params = explode(",", $str_params);
-        }
-        $parsed["params"] = $parsed_params;
-        $parsed["name"] = $name;
-         */
-        return null;
+    private Map<String, String> _parseParams(String rule) {
+        Map<String, String> parsedParams = new HashMap<>();
+        String[] split = rule.split("()");
+        String name = split[0];
+        String params = split[1].replace(")", "").trim();
+        parsedParams.put("params", params);
+        parsedParams.put("name", name);
+        return parsedParams;
     }
 
-    private String[] _splitRule(String rule) {
-        /*
-        $rules = array();
-        $init_rule = str_replace("|", ";", $init_rule);
-        $rules = explode(";", $init_rule);
-        foreach($rules as $key => $rule)
-        {
-            $rules[$key] = trim($rule);
+    private String[] _splitRule(String rules_string) {
+        rules_string = rules_string.replaceAll("|", ";");
+        String[] rules = rules_string.split(";");
+        for (int i = 0; i < rules.length; i++) {
+            rules[i] = rules[i].trim();
         }
-         */
-        return new String[0];
+        return rules;
     }
 
     private Operator[] _operatorClassifier(String conditions) {
