@@ -2,6 +2,7 @@ package com.ontraport.sdk.models.rules;
 
 import com.ontraport.sdk.exceptions.OntraportAPIRuntimeException;
 import com.ontraport.sdk.http.RequestParams;
+import com.ontraport.sdk.http.SingleResponse;
 import com.ontraport.sdk.models.Requestable;
 
 import java.util.ArrayList;
@@ -80,14 +81,20 @@ public class RuleBuilder implements Requestable {
     public static String HUNDRED_TWENTY_DAYS_FROM_NOW = "120DFNOW";
     public static String HUNDRED_EIGHTY_DAYS_FROM_NOW = "180DFNOW";
 
-    public RuleBuilder(String name, int object_type_id, String id) {
+    public RuleBuilder(String name, int object_type_id) {
+        this(null, name, object_type_id);
+    }
+
+    public RuleBuilder(String id, String name, int object_type_id) {
+        _id = id;
         _name = name;
         _object_type_id = object_type_id;
-        _id = id;
     }
 
     @Override
     public RequestParams toRequestParams() {
+
+
         /*
         if (empty(_events) || empty(_actions))
         {
@@ -123,38 +130,31 @@ public class RuleBuilder implements Requestable {
         return null;
     }
 
-    public static void CreateFromResponse() {
-        /*
-        $name = $data["name"];
-        $object_type_id = $data["object_type_id"];
-        $id = $data["id"];
+    public static RuleBuilder CreateFromResponse(SingleResponse response) {
+        String id  = response.getData().get("id");
+        String name = response.getData().get("name");
+        int object_type_id = Integer.parseInt(response.getData().get("object_type_id"));
 
-        $builder = new RuleBuilder($name, $object_type_id, $id);
+        RuleBuilder ruleBuilder = new RuleBuilder(id, name, object_type_id);
 
-        $events = self::_splitRule($data["events"]);
-        $conditions = array();
-        if ($data["conditions"] != null)
-        {
-            $conditions = self::_splitRule($data["conditions"]);
-        }
-        $actions = self::_splitRule($data["actions"]);
+        String[] events = _splitRule(response.getData().get("events"));
+        String[] actions = _splitRule(response.getData().get("actions"));
+        String[] conditions = _splitRule(response.getData().get("conditions"));
 
-        foreach($events as $event)
-        {
-            // separate rule and params
-            $parsed = self::_parseParams($event);
-            $builder->addEvent($parsed["name"], $parsed["params"]);
+        for (String event : events) {
+            Map<String, String> parsed = _parseParams(event);
+            ruleBuilder.addEvent(Event.fromRule(parsed.get("name")), new String[]{parsed.get("params")});
         }
-        foreach($actions as $action)
-        {
-            // separate rule and params
-            $parsed = self::_parseParams($action);
-            $builder->addAction($parsed["name"], $parsed["params"]);
+
+        for (String action : actions) {
+            Map<String, String> parsed = _parseParams(action);
+            ruleBuilder.addAction(Action.fromRule(parsed.get("name")), new String[]{parsed.get("params")});
         }
-        if (!empty($conditions))
-        {
-            foreach($conditions as $condition)
-            {
+
+        if (conditions.length > 0) {
+            for (String condition : conditions) {
+
+                /*
                 // determine operators
                 $operators = self::_operatorClassifier($data["conditions"]);
                 $or_rule = $operators["or_rules"];
@@ -165,20 +165,25 @@ public class RuleBuilder implements Requestable {
 
                 if (in_array($condition, $end_rule))
                 {
-                    $builder->addCondition($parsed["name"], $parsed["params"]);
+                    ruleBuilder.addCondition(Condition.fromRule(parsed.get("name")), new String[]{parsed.get("params")}, null);
                 }
                 else if (in_array($condition, $or_rule))
                 {
-                    $builder->addCondition($parsed["name"], $parsed["params"], "OR");
+                    ruleBuilder.addCondition(Condition.fromRule(parsed.get("name")), new String[]{parsed.get("params")}, Operator.AND);
                 }
                 else if (in_array($condition, $and_rule))
                 {
-                    $builder->addCondition($parsed["name"], $parsed["params"], "AND");
+                    ruleBuilder.addCondition(Condition.fromRule(parsed.get("name")), new String[]{parsed.get("params")}, Operator.OR);
                 }
+                */
+
+                Map<String, String> parsed = _parseParams(condition);
+                ruleBuilder.addCondition(Condition.fromRule(parsed.get("name")), new String[]{parsed.get("params")}, null);
             }
         }
-        return $builder;
-         */
+
+
+        return ruleBuilder;
     }
 
     public RuleBuilder addEvent(Event event, String[] params) {
@@ -286,7 +291,7 @@ public class RuleBuilder implements Requestable {
         return Arrays.toString(params).replace(", ", delimiter).replaceAll("[\\[\\]]", "");
     }
 
-    private Map<String, String> _parseParams(String rule) {
+    private static Map<String, String> _parseParams(String rule) {
         Map<String, String> parsedParams = new HashMap<>();
         String[] split = rule.split("()");
         String name = split[0];
@@ -296,7 +301,11 @@ public class RuleBuilder implements Requestable {
         return parsedParams;
     }
 
-    private String[] _splitRule(String rules_string) {
+    private static String[] _splitRule(String rules_string) {
+        if (rules_string == null) {
+            return new String[0];
+        }
+
         rules_string = rules_string.replaceAll("|", ";");
         String[] rules = rules_string.split(";");
         for (int i = 0; i < rules.length; i++) {
