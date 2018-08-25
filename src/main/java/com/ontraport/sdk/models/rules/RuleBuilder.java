@@ -293,7 +293,7 @@ public class RuleBuilder implements Requestable {
 
     private static Map<String, String> _parseParams(String rule) {
         Map<String, String> parsedParams = new HashMap<>();
-        String[] split = rule.split("()");
+        String[] split = rule.split("[\\(\\)]");
         String name = split[0];
         String params = split[1].replace(")", "").trim();
         parsedParams.put("params", params);
@@ -306,13 +306,26 @@ public class RuleBuilder implements Requestable {
             return new String[0];
         }
 
-        rules_string = rules_string.replaceAll("|", ";");
-        String[] rules = rules_string.split(";");
+        String[] rules = rules_string.split("(?<=;)|(?<=\\|)");
         for (int i = 0; i < rules.length; i++) {
             rules[i] = rules[i].trim();
         }
         return rules;
     }
+
+    /*
+
+        String[] rules = rules_string.split("(?<=;)|(?<=\\|)");
+        for (int i = 0; i < rules.length; i++) {
+            rules[i] = rules[i].trim();
+            Map<String, String> parsed = _parseParams(rules[i]);
+            String operator = rules[i].substring(rules[i].length() - 1);
+            type = (T) RuleType.fromRule(parsed.get("name"));
+            RulePart<T> rulePart = new RulePart<>(type, parsed.get("params"), Operator.fromOperator(operator));
+        }
+
+
+     */
 
     private Operator[] _operatorClassifier(String conditions) {
         /*
