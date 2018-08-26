@@ -131,57 +131,35 @@ public class RuleBuilder implements Requestable {
     }
 
     public static RuleBuilder CreateFromResponse(SingleResponse response) {
-        String id  = response.getData().get("id");
+        String id = response.getData().get("id");
         String name = response.getData().get("name");
         int object_type_id = Integer.parseInt(response.getData().get("object_type_id"));
 
         RuleBuilder ruleBuilder = new RuleBuilder(id, name, object_type_id);
 
         String[] events = _splitRule(response.getData().get("events"));
-        String[] actions = _splitRule(response.getData().get("actions"));
-        String[] conditions = _splitRule(response.getData().get("conditions"));
-
         for (String event : events) {
             Map<String, String> parsed = _parseParams(event);
-            ruleBuilder.addEvent(Event.fromRule(parsed.get("name")), new String[]{parsed.get("params")});
+            Event type = (Event) RuleType.fromRule(parsed.get("name"));
+            ruleBuilder.addEvent(type, parsed.get("params").split(","));
         }
 
+        String[] actions = _splitRule(response.getData().get("actions"));
         for (String action : actions) {
             Map<String, String> parsed = _parseParams(action);
-            ruleBuilder.addAction(Action.fromRule(parsed.get("name")), new String[]{parsed.get("params")});
+            Action type = (Action) RuleType.fromRule(parsed.get("name"));
+            ruleBuilder.addAction(type, parsed.get("params").split(","));
         }
 
+        String[] conditions = _splitRule(response.getData().get("conditions"));
         if (conditions.length > 0) {
             for (String condition : conditions) {
-
-                /*
-                // determine operators
-                $operators = self::_operatorClassifier($data["conditions"]);
-                $or_rule = $operators["or_rules"];
-                $and_rule = $operators["and_rules"];
-                $end_rule = $operators["end_rule"];
-                // separate rule and param
-                $parsed = self::_parseParams($condition);
-
-                if (in_array($condition, $end_rule))
-                {
-                    ruleBuilder.addCondition(Condition.fromRule(parsed.get("name")), new String[]{parsed.get("params")}, null);
-                }
-                else if (in_array($condition, $or_rule))
-                {
-                    ruleBuilder.addCondition(Condition.fromRule(parsed.get("name")), new String[]{parsed.get("params")}, Operator.AND);
-                }
-                else if (in_array($condition, $and_rule))
-                {
-                    ruleBuilder.addCondition(Condition.fromRule(parsed.get("name")), new String[]{parsed.get("params")}, Operator.OR);
-                }
-                */
-
                 Map<String, String> parsed = _parseParams(condition);
-                ruleBuilder.addCondition(Condition.fromRule(parsed.get("name")), new String[]{parsed.get("params")}, null);
+                String operator = condition.substring(condition.length() - 1);
+                Condition type = (Condition) RuleType.fromRule(parsed.get("name"));
+                ruleBuilder.addCondition(type, parsed.get("params").split(","), Operator.fromOperator(operator));
             }
         }
-
 
         return ruleBuilder;
     }
@@ -311,76 +289,5 @@ public class RuleBuilder implements Requestable {
             rules[i] = rules[i].trim();
         }
         return rules;
-    }
-
-    /*
-
-        String[] rules = rules_string.split("(?<=;)|(?<=\\|)");
-        for (int i = 0; i < rules.length; i++) {
-            rules[i] = rules[i].trim();
-            Map<String, String> parsed = _parseParams(rules[i]);
-            String operator = rules[i].substring(rules[i].length() - 1);
-            type = (T) RuleType.fromRule(parsed.get("name"));
-            RulePart<T> rulePart = new RulePart<>(type, parsed.get("params"), Operator.fromOperator(operator));
-        }
-
-
-     */
-
-    private Operator[] _operatorClassifier(String conditions) {
-        /*
-        $or_rules = array();
-        $and_rules = array();
-        $end_rule = array();
-        $strlen = strlen($init_conditions);
-        $counter = 0;
-
-        for($i = 0; $i <= $strlen; $i++)
-        {
-            $char = substr($init_conditions, $i, 1);
-
-            if ($char == "|" || $char == ";"|| $i == ($strlen - 1))
-            {
-                $rule = substr($init_conditions, $counter, $i - $counter);
-                $rule = trim($rule);
-                if ($char == "|")
-                {
-                    $or_rules[] = $rule;
-                }
-                else if ($char == ";")
-                {
-                    $and_rules[] = $rule;
-                }
-                else if ($i == ($strlen - 1))
-                {
-                    $rule = substr($init_conditions, $counter, $strlen - $counter);
-                    $end_rule[] = $rule;
-                }
-                $counter = $i + 1;
-            }
-        }
-        $operators = array(
-            "or_rules" => $or_rules,
-            "and_rules" => $and_rules,
-            "end_rule" => $end_rule
-        );
-         */
-        return new Operator[0];
-    }
-
-    private class RulePart<T extends RuleType> {
-        private T _type;
-        private String _value;
-        private Operator _operator;
-
-        RulePart(T type, String value) {
-            this(type, value, null);
-        }
-
-        RulePart(T type, String value, Operator operator) {
-            _type = type;
-            _value = value;
-            _operator = operator;
-        }
     }
 }
