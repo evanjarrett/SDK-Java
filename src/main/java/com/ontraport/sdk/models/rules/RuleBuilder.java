@@ -94,40 +94,32 @@ public class RuleBuilder implements Requestable {
     @Override
     public RequestParams toRequestParams() {
 
+        String[] event_list = new String[_events.size()];
+        for (int i = 0; i < _events.size(); i++) {
+            event_list[i] = _events.get(i).getType().getFormattedRule(_events.get(i).getValue());
+        }
+        String event = join(event_list, ";");
 
-        /*
-        if (empty(_events) || empty(_actions))
-        {
-            throw new OntraportAPIException("Events and Actions must be added to create rule.");
+        String[] action_list = new String[_actions.size()];
+        for (int i = 0; i < _actions.size(); i++) {
+            action_list[i] = _actions.get(i).getType().getFormattedRule(_actions.get(i).getValue());
+        }
+        String action = join(event_list, ";");
+
+        String condition = "";
+        for (int i = 0; i < _conditions.size(); i++) {
+            Operator op = _conditions.get(i).getOperator();
+            condition += _conditions.get(i).getType().getFormattedRule(_conditions.get(i).getValue()) + op;
         }
 
-        Event[] events = implode(";", _events);
-        Action[] actions = implode(";", _actions);
+        RequestParams params = new RequestParams();
+        params.put("object_type_id", _object_type_id);
+        params.put("name", _name);
+        params.put("events", event);
+        params.put("conditions", condition);
+        params.put("actions", action);
 
-        if (!empty(_conditions))
-        {
-            conditions = implode(_conditions);
-            conditions = trim(conditions, ";");
-            conditions = trim(conditions, "|");
-        }
-        else if (empty(_conditions))
-        {
-            conditions = "";
-        }
-        requestParams = array(
-            "object_type_id" => _object_type_id,
-            "name" => _name,
-            "events" =>  events,
-            "conditions" => conditions,
-            "actions" => actions
-        );
-        if (!empty(_id))
-        {
-            requestParams["id"] = _id;
-        }
-        return requestParams;
-         */
-        return null;
+        return params;
     }
 
     public static RuleBuilder CreateFromResponse(SingleResponse response) {
@@ -182,9 +174,9 @@ public class RuleBuilder implements Requestable {
 
     public <T extends RuleType> RuleBuilder add(T type, List<RulePart<T>> list, String[] params, Operator operator) {
         if (validateRule(type) && _checkParams(type.getRequiredParams(), params)) {
-            String value = _formatParams(params);
+            String value = join(params, ",");
             if (type instanceof Action && type == Action.PING_URL) {
-                value = _formatParams(params, "::");
+                value = join(params, "::");
             }
             list.add(new RulePart<>(type, value, operator));
         }
@@ -261,12 +253,20 @@ public class RuleBuilder implements Requestable {
         return true;
     }
 
-    private String _formatParams(String[] params) {
-        return _formatParams(params, ",");
-    }
+    public static String join(String[] params, String delimiter) {
+        if (params == null)
+            return "";
 
-    private String _formatParams(String[] params, String delimiter) {
-        return Arrays.toString(params).replace(", ", delimiter).replaceAll("[\\[\\]]", "");
+        int iMax = params.length - 1;
+        if (iMax == -1)
+            return "";
+
+        StringBuilder b = new StringBuilder();
+        for (int i = 0; i < iMax; i++) {
+            b.append(String.valueOf(params[i]));
+            b.append(delimiter);
+        }
+        return b.toString();
     }
 
     private static Map<String, String> _parseParams(String rule) {

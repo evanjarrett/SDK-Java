@@ -14,4 +14,16 @@ public class RulePart<T extends RuleType> {
         _value = value;
         _operator = operator;
     }
+
+    public T getType() {
+        return _type;
+    }
+
+    public Operator getOperator() {
+        return _operator;
+    }
+
+    public String getValue() {
+        return _value;
+    }
 }
