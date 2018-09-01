@@ -132,14 +132,14 @@ public class RuleBuilder implements Requestable {
         String[] events = _splitRule(response.getData().get("events"));
         for (String event : events) {
             Map<String, String> parsed = _parseParams(event);
-            Event type = (Event) RuleType.fromRule(parsed.get("name"));
+            Event type = Event.fromRule(parsed.get("name"));
             ruleBuilder.addEvent(type, parsed.get("params").split(","));
         }
 
         String[] actions = _splitRule(response.getData().get("actions"));
         for (String action : actions) {
             Map<String, String> parsed = _parseParams(action);
-            Action type = (Action) RuleType.fromRule(parsed.get("name"));
+            Action type = Action.fromRule(parsed.get("name"));
             ruleBuilder.addAction(type, parsed.get("params").split(","));
         }
 
@@ -148,7 +148,7 @@ public class RuleBuilder implements Requestable {
             for (String condition : conditions) {
                 Map<String, String> parsed = _parseParams(condition);
                 String operator = condition.substring(condition.length() - 1);
-                Condition type = (Condition) RuleType.fromRule(parsed.get("name"));
+                Condition type = Condition.fromRule(parsed.get("name"));
                 ruleBuilder.addCondition(type, parsed.get("params").split(","), Operator.fromOperator(operator));
             }
         }
