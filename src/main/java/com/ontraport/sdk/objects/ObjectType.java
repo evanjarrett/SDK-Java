@@ -81,7 +81,9 @@ public enum ObjectType {
     TAG_SUBSCRIBER(138),
     CAMPAIGN_BUILDER(140),
     CAMPAIGN(140),
-    DELETED_ORDER(146);
+    DELETED_ORDER(146),
+    DEAL(149),
+    COMPANY(150);
 
     private final int _id;
     private static Map<Integer, ObjectType> map = new HashMap<>();
