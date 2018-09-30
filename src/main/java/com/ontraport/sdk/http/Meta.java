@@ -17,6 +17,14 @@ public class Meta extends AbstractResponse {
         public String getType() {
             return type;
         }
+        
+        public String getEditable() {
+            return type;
+        }
+        
+        public String getRequired() {
+            return null;
+        }
 
         public Map<String, Field> getFields() {
             return fields;
