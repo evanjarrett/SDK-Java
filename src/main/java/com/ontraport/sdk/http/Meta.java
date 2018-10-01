@@ -8,6 +8,10 @@ public class Meta extends AbstractResponse {
     public class Data implements AbstractResponse.Data {
         String name;
         String type;
+        Integer required;
+        Integer unique;
+        Integer editable;
+        Integer deletable;
         Map<String, Field> fields;
 
         public String getName() {
@@ -17,13 +21,21 @@ public class Meta extends AbstractResponse {
         public String getType() {
             return type;
         }
-        
-        public String getEditable() {
-            return type;
+
+        public boolean isRequired() {
+            return required.equals(1);
         }
-        
-        public String getRequired() {
-            return null;
+
+        public boolean isUnique() {
+            return unique.equals(1);
+        }
+
+        public boolean isEditable() {
+            return editable.equals(1);
+        }
+
+        public boolean isDeletable() {
+            return deletable.equals(1);
         }
 
         public Map<String, Field> getFields() {
