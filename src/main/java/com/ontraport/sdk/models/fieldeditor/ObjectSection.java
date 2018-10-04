@@ -18,7 +18,7 @@ public class ObjectSection implements Requestable {
     private Column[] _columns = {new Column(), new Column(), new Column()};
 
     public ObjectSection(String name, String description) {
-        this(name, "", new Column[]{new Column(), new Column(), new Column()});
+        this(name, description, new Column[]{new Column(), new Column(), new Column()});
     }
 
     public ObjectSection(String name, Column[] fields) {
