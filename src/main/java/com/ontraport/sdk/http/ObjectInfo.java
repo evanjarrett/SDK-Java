@@ -31,10 +31,17 @@ public class ObjectInfo extends AbstractResponse {
             }
             else if (listFieldSettings instanceof List) {
                 List<Object> settings = (List<Object>) listFieldSettings;
+                String width;
                 for (Object obj : settings) {
                     if (obj instanceof Map) {
-                        Map<String, String> setting = (Map<String, String>) obj;
-                        fieldSettings.add(new FieldSettings(setting.get("name"), setting.get("width"), setting.get("sortDir")));
+                        Map<String, Object> setting = (Map<String, Object>) obj;
+                        if (setting.get("width") instanceof Double) {
+                            width = Double.toString((Double) setting.get("width"));
+                        }
+                        else {
+                            width = (String) setting.get("width");
+                        }
+                        fieldSettings.add(new FieldSettings((String) setting.get("name"), width, (String) setting.get("sortDir")));
                     }
                 }
                 return fieldSettings;
